@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">时刻</string>
+    <string name="map">地图</string>
+    <string name="event">事件</string>
+    <string name="me">用户</string>
+    <string name="later"><u>稍后登录</u></string>
+</resources>
