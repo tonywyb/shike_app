@@ -12,13 +12,6 @@
         android:layout_margin="5dp"
         android:background="#80129bea"/>
 
-    <com.baidu.mapapi.map.MapView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/bdmap"
-        android:clickable="true"
-        android:layout_above="@+id/nothing">
-    </com.baidu.mapapi.map.MapView>
 
     <FrameLayout
         android:id="@+id/buttomfl"
@@ -27,7 +20,6 @@
         android:layout_alignParentBottom="true"
         android:background="#FFFFFF"
         android:visibility="gone"/>
-
     <Button
         android:id="@+id/tobuttom"
         android:layout_height="30dp"

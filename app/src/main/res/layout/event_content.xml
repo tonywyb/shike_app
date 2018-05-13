@@ -37,99 +37,112 @@
             android:layout_marginTop="3dp"
             android:layout_marginLeft="-5dp"
             android:background="#00000000"/>
-
-        <Button
-            android:id="@+id/deletebtn"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:text="删除"
-            android:textSize="18dp"
-            android:layout_alignParentRight="true"
-            android:paddingTop="4dp"
-            android:layout_marginRight="2dp"
-            android:background="#00000000"
-            android:visibility="gone"/>
         <Button
             android:id="@+id/reportbtn"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:text="举报超时"
-            android:textSize="17dp"
+            android:text="举报"
+            android:textSize="18dp"
             android:layout_alignParentRight="true"
             android:paddingTop="4dp"
-            android:layout_marginRight="7dp"
+            android:layout_marginRight="5dp"
             android:background="#00000000"/>
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
-        android:id="@+id/contentLinear1"
-        android:layout_below="@+id/relativeLayout2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:textColor="#000000"
-            android:textSize="18dp"
-            android:text="事件标题: "/>
-        <TextView
-            android:id="@+id/event_title"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
-            android:textColor="#000000"
-            android:textSize="18dp"/>
-    </LinearLayout>
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/relativeLayout2"
+        android:layout_above="@+id/view">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/contentLinear2"
-        android:layout_below="@+id/contentLinear1"
-        android:layout_marginTop="11dp">
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/contentLinear1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:textColor="#000000"
-            android:textSize="18dp"
-            android:text="发布用户: "/>
-        <TextView
-            android:id="@+id/event_user"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
-            android:textColor="#000000"
-            android:textSize="18dp"/>
-    </LinearLayout>
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="13dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="事件标题: "
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/event_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/contentLinear2"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/contentLinear1"
+            android:layout_marginTop="11dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="发布用户: "
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/event_user"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/testImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="21dp"
+            android:layout_marginRight="21dp" />
+
+    </RelativeLayout>
+
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#000000"
-        android:layout_below="@+id/contentLinear2"
+        android:layout_above="@+id/contentRelative"
         android:layout_marginTop="10dp"
         android:id="@+id/view" />
 
-    <LinearLayout
-        android:id="@+id/contentLinear3"
+    <RelativeLayout
+        android:id="@+id/contentRelative"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginTop="13dp"
-        android:layout_below="@+id/view"
+        android:layout_height="80dp"
+        android:layout_above="@+id/comment_fl"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
+            android:text="菜品描述: "
             android:textColor="#000000"
-            android:textSize="16dp"
-            android:text="事件描述: "/>
+            android:textSize="16dp" />
+
         <TextView
             android:id="@+id/event_content"
             android:layout_width="wrap_content"
@@ -137,49 +150,27 @@
             android:layout_marginRight="20dp"
             android:textColor="#000000"
             android:textSize="15dp" />
-    </LinearLayout>
 
-    <TextView
-        android:id="@+id/comment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/comment_fl"
-        android:text="评 论"
-        android:textColor="#000000"
-        android:textSize="15sp"
-        android:paddingLeft="15dp"
-        android:background="#f7d3d3"/>
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/comment_fl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/contentLinear3">
+        android:layout_height="280dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/rl_input"
+        android:layout_toRightOf="@+id/rl_input">
 
         <TextView
-            android:id="@+id/helper"
-            android:layout_width="wrap_content"
+            android:id="@+id/comment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_above="@+id/comment_fl"
+            android:background="#f7d3d3"
+            android:paddingLeft="15dp"
+            android:text="评 论"
             android:textColor="#000000"
-            android:textSize="18sp"
-            android:visibility="gone"/>
-        <Button
-            android:id="@+id/helpbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="点击帮忙"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="60dp"
-            android:visibility="gone"/>
-        <Button
-            android:id="@+id/contact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="联系他（她）"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="60dp"
-            android:visibility="gone"/>
+            android:textSize="15sp" />
     </FrameLayout>
 
     <ImageButton

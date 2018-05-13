@@ -19,13 +19,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.mapapi.map.*;
-import com.baidu.mapapi.model.LatLng;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.Header;
 import org.apache.http.entity.ByteArrayEntity;
@@ -39,25 +39,21 @@ import java.io.UnsupportedEncodingException;
 
 public class MyFragment1 extends Fragment {
 
-    MapView map = null;
-    BaiduMap bdmap;
     private Button locbtn = null;
     private Context mContext;
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
-    private Marker marker;
     private Event[] eventList = new Event[1000];
     private int count = 0;
-    private BitmapDescriptor bitmap = BitmapDescriptorFactory
-            .fromResource(R.mipmap.icon_gcoding);
     private static final int msgKey1 = 1;
     private MyFragment1.TimeThread update_thread;
-    private InfoWindow addWindow;
-    private InfoWindow eventWindow;
     private FrameLayout buttomfl;
     private Button tobuttom;
     private View nothing;
     private boolean isRun = true;
+
+
+
     public class TimeThread extends Thread {
         private final Object lock = new Object();
         private boolean pause = false;
@@ -115,6 +111,9 @@ public class MyFragment1 extends Fragment {
         }
     };
 
+    //test pictures loading
+    private ImageView testImage;
+
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_content1, container, false);
@@ -122,7 +121,6 @@ public class MyFragment1 extends Fragment {
         buttomfl = (FrameLayout) view.findViewById(R.id.buttomfl);
         tobuttom = (Button) view.findViewById(R.id.tobuttom);
         nothing = (View) view.findViewById(R.id.nothing);
-        map = (MapView) view.findViewById(R.id.bdmap);
         locbtn = (Button) view.findViewById(R.id.locbtn);
         final String[] eventtype = new String[]{"实时", "活动预告", "求助"};
         locbtn.setText(eventtype[PreferenceUtil.maptype]);
@@ -151,96 +149,8 @@ public class MyFragment1 extends Fragment {
                 dialogWindow.setAttributes(p);
             }
         });
-        bdmap = map.getMap();
-        bdmap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                bdmap.hideInfoWindow();
-                update_thread.resumeThread();
-                if (buttomfl.getVisibility() == View.VISIBLE)
-                    hidebuttom();
-            }
 
-            @Override
-            public boolean onMapPoiClick(MapPoi mapPoi) {
-                bdmap.hideInfoWindow();
-                update_thread.resumeThread();
-                if (buttomfl.getVisibility() == View.VISIBLE)
-                    hidebuttom();
-                Toast.makeText(mContext, "请到详情页选择地点！", Toast.LENGTH_LONG).show();
-                return false;
-            }
-        });
-        bdmap.setOnMapLongClickListener(new BaiduMap.OnMapLongClickListener() {
-            @Override
-            public void onMapLongClick(final LatLng latLng) {
-                bdmap.hideInfoWindow();
-                update_thread.pauseThread();
-                LayoutInflater inflater = LayoutInflater.from(mContext);
-                View view = inflater.inflate(R.layout.addwindow, null);
-                Button add = view.findViewById(R.id.addButton);
 
-                add.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        //在这个地方转到添加新事件
-                        if (PreferenceUtil.islogged) {
-                            double coordinateX = latLng.longitude;
-                            double coordinateY = latLng.latitude;
-                            /*LatLng northwest = new LatLng(40.005716, 116.310486);
-                            LatLng southeast = new LatLng(39.992755, 116.328488);*/
-                            if (coordinateY < 39.992755 || coordinateY > 40.005716 || coordinateX < 116.310486 || coordinateX > 116.328488)
-                            {
-                                Toast.makeText(mContext, "超出服务范围", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                            Bundle bd = new Bundle();
-                            bd.putDouble("locationX", coordinateX);
-                            bd.putDouble("locationY", coordinateY);
-                            Intent it = new Intent(getActivity(), NewEvent.class);
-                            it.putExtras(bd);
-                            startActivity(it);
-                        }
-                        else
-                            Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                addWindow = new InfoWindow(view, latLng, 0);
-                bdmap.showInfoWindow(addWindow);
-            }
-        });
-        bdmap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                update_thread.pauseThread();
-                final int eventIndex = (int)marker.getExtraInfo().get("index");
-                if (eventList[eventIndex].getLocationID() >= 0) {
-                    showbuttom(eventList[eventIndex].getLocationID(), PreferenceUtil.maptype);
-                    return false;
-                }
-                bdmap.hideInfoWindow();
-                hidebuttom();
-                LayoutInflater inflater = LayoutInflater.from(mContext);
-                View view = inflater.inflate(R.layout.infowindow, null);
-                TextView title = (TextView)view.findViewById(R.id.popTitle);
-                Button getContent = (Button)view.findViewById(R.id.getContent);
-                title.setText("标题: "+eventList[eventIndex].title);
-                getContent.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Bundle bd = new Bundle();
-                        bd.putInt("eventID", eventList[eventIndex].getEventId());
-                        bd.putInt("which", 2);
-                        Intent it = new Intent(getActivity(), EventActivity.class);
-                        it.putExtras(bd);
-                        startActivity(it);
-                    }
-                });
-                LatLng point = marker.getPosition();
-                eventWindow = new InfoWindow(view, point, -47);
-                bdmap.showInfoWindow(eventWindow);
-                return false;
-            }
-        });
         return view;
     }
 
@@ -286,30 +196,14 @@ public class MyFragment1 extends Fragment {
     public void onDestroy(){
         super.onDestroy();
         isRun = false;
-        map.onDestroy();
     }
     public void onResume(){
         super.onResume();
-        map.onResume();
         update_thread.resumeThread();
         //设定地图显示范围
-        bdmap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
-            @Override
-            public void onMapLoaded() {
-                /*LatLng northwest = new LatLng(40.005716, 116.310486);
-                LatLng southeast = new LatLng(39.992755, 116.328488);
-                LatLngBounds bound = new LatLngBounds.Builder().include(northwest).include(southeast).build();
-                bdmap.setMapStatusLimits(bound);*/
-                LatLng center = new LatLng(39.99907, 116.316289);
-                MapStatus mMapStatus = new MapStatus.Builder().target(center).zoom(17).build();
-                MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
-                bdmap.setMapStatus(mMapStatusUpdate);
-            }
-        });
     }
     public void onPause(){
         super.onPause();
-        map.onPause();
         update_thread.pauseThread();
     }
     private void getEventByTypeAsyncHttpClientPost(int type) {
@@ -347,7 +241,6 @@ public class MyFragment1 extends Fragment {
                     else if(status == 0) {
                         //Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
                         int count = response.getInt("eventNum");
-                        bdmap.clear();
                         if (count > 0) {
                             JSONArray events = response.getJSONArray("events");
                             //Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
@@ -373,17 +266,7 @@ public class MyFragment1 extends Fragment {
                                 eventList[i].setUsername(temp.getString("username"));
                                 Bundle bundle = new Bundle();
                                 bundle.putInt("index", i);
-                                LatLng point = new LatLng(eventList[i].locationY, eventList[i].locationX);
-                                if (eventList[i].locationID >= 0)
-                                    bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.icon_gcoding2);
-                                else
-                                    bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.icon_gcoding);
-                                OverlayOptions option = new MarkerOptions()
-                                        .position(point)
-                                        .icon(bitmap)
-                                        .extraInfo(bundle);
                                 //在地图上添加Marker，并显示
-                                marker = (Marker) bdmap.addOverlay(option);
                             }
                         }
                     }
