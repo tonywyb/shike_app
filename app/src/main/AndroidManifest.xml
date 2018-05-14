@@ -42,7 +42,7 @@
         <activity android:name="com.example.peter.shike_app.Signup" />
         <activity android:name="com.example.peter.shike_app.Myevent" />
         <activity
-            android:name="com.example.peter.shike_app.EventActivity"
+            android:name="com.example.peter.shike_app.dishActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" >
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>

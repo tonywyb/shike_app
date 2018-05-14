@@ -96,7 +96,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         }
         bd.putInt("eventID", eventID);
         bd.putInt("which", which);
-        Intent it = new Intent(getActivity(), EventActivity.class);
+        Intent it = new Intent(getActivity(), dishActivity.class);
         it.putExtras(bd);
         startActivity(it);
     }

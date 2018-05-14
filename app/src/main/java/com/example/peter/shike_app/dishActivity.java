@@ -1,10 +1,6 @@
 package com.example.peter.shike_app;
 
 import android.app.AlertDialog;
-import android.content.Intent;
-import android.net.Uri;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -33,7 +29,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-public class EventActivity extends AppCompatActivity {
+public class dishActivity extends AppCompatActivity {
 
     private int which, eventID;
     private AlertDialog alert = null;
@@ -53,7 +49,7 @@ public class EventActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_content);
-        mContext = EventActivity.this;
+        mContext = dishActivity.this;
         eventcontenttitle = (TextView) findViewById(R.id.eventcontenttitle);
         eventcontentret = (Button) findViewById(R.id.eventcontentret);
         eventcontentret.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +70,7 @@ public class EventActivity extends AppCompatActivity {
         String picURL = "http://ch.huyunfan.cn/IMG_9211.JPG";
         Picasso.with(mContext)
                 .load(picURL)
+                .fit()
                 .into(testImage);
 
         Bundle bd = getIntent().getExtras();
