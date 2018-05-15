@@ -251,10 +251,6 @@ public class MyFragment1 extends Fragment {
                                 //eventList[i].setBeginTime(temp.getString("beginTime"));
                                 eventList[i].setDescription(temp.getString("description"));
                                 //eventList[i].setEndTime(temp.getString("endTime"));
-                                if (temp.getInt("locationID") == -1)
-                                    eventList[i].setLocation(temp.getDouble("locationX"), temp.getDouble("locationY"));
-                                else
-                                    eventList[i].setLocation(temp.getInt("locationID"));
                                 eventList[i].setOutdate(temp.getInt("outdate"));
                                 eventList[i].setType(temp.getInt("type"));
                                 if (eventList[i].getType() == 2) {

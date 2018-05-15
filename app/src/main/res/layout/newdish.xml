@@ -251,7 +251,7 @@
             android:background="@drawable/grey_edge"
             android:padding="1dp"
             android:scaleType="centerInside"
-            android:src="@mipmap/addPhoto2" />
+            android:src="@mipmap/addphoto2" />
     </RelativeLayout>
 
 

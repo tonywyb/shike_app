@@ -24,30 +24,8 @@ public class Event {
     public void setTitle(String title) {
         this.title = title;
     }
-    public void setLocation(int index) {
-        this.locationID = index;
-        this.locationX = PreferenceUtil.coordinateX[index];
-        this.locationY = PreferenceUtil.coordinateY[index];
-    }
-    public void setLocation(double locationX, double locationY) {
-        this.locationID = -1;
-        this.locationX = locationX;
-        this.locationY = locationY;
-    }
-    /*public void setBeginTime(String beginDate, String beginTime) {
-        this.beginDate = beginDate;
-        this.beginTime = beginTime;
-    }*/
-    public void setBeginTime(String beginTime){
-        this.beginTime = beginTime;
-    }
-    public void setEndTime(String endTime){
-        this.endTime = endTime;
-    }
-    /*public void setEndTime(String endDate, String endTime) {
-        this.endDate = endDate;
-        this.endTime = endTime;
-    }*/
+
+
     public void setType(String type) {
         switch (type) {
             case "实时":

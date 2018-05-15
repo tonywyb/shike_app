@@ -206,9 +206,6 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                                 event.setDescription(temp.getString("description"));
                                 //eventList[i].setEndTime(temp.getString("endTime"));
                                 if (temp.getInt("locationID") == -1)
-                                    event.setLocation(temp.getDouble("locationX"), temp.getDouble("locationY"));
-                                else
-                                    event.setLocation(temp.getInt("locationID"));
                                 event.setOutdate(temp.getInt("outdate"));
                                 event.setType(temp.getInt("type"));
                                 if (event.getType() == 2) {
@@ -285,10 +282,6 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                                 //eventList[i].setBeginTime(temp.getString("beginTime"));
                                 event.setDescription(temp.getString("description"));
                                 //eventList[i].setEndTime(temp.getString("endTime"));
-                                if (temp.getInt("locationID") == -1)
-                                    event.setLocation(temp.getDouble("locationX"), temp.getDouble("locationY"));
-                                else
-                                    event.setLocation(temp.getInt("locationID"));
                                 event.setOutdate(temp.getInt("outdate"));
                                 event.setType(temp.getInt("type"));
                                 if (event.getType() == 2) {
