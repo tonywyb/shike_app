@@ -63,44 +63,6 @@
         android:layout_height="1dp"
         android:background="#f5f5f5">
     </LinearLayout>>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/mylove"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="0\n关注"
-            android:textSize="15sp"
-            android:textColor="#000000"
-            android:background="#FFFFFF"/>
-        <Button
-            android:id="@+id/myfans"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="0\n粉丝"
-            android:textSize="15sp"
-            android:textColor="#000000"
-            android:background="#FFFFFF"/>
-        <Button
-            android:id="@+id/myevent"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="0\n发布事件"
-            android:textSize="15sp"
-            android:textColor="#000000"
-            android:background="#FFFFFF"/>
-    </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="7dp"
@@ -109,35 +71,25 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="80dp"
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/mycollection"
+            android:id="@+id/myfocustag"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="       我的收藏"
+            android:text="       我关注的标签"
             android:gravity="left|center_vertical"
             android:textSize="15sp"
             android:textColor="#000000"
             android:background="#FFFFFF"/>
         <Button
-            android:id="@+id/myhistory"
+            android:id="@+id/myupload"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="       浏览历史"
-            android:gravity="left|center_vertical"
-            android:textSize="15sp"
-            android:textColor="#000000"
-            android:background="#FFFFFF"/>
-        <Button
-            android:id="@+id/mypoints"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="       我的积分"
+            android:text="       我的上传"
             android:gravity="left|center_vertical"
             android:textSize="15sp"
             android:textColor="#000000"
@@ -180,17 +132,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="       关于PKU_Map"
+            android:text="       关于食刻"
             android:gravity="left|center_vertical"
             android:textSize="15sp"
             android:textColor="#000000"
             android:background="#FFFFFF"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="7dp"
-        android:background="#f5f5f5">
-    </LinearLayout>>
 
 </LinearLayout>

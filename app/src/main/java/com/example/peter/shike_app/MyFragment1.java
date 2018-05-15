@@ -118,72 +118,7 @@ public class MyFragment1 extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_content1, container, false);
         mContext = getActivity();
-        buttomfl = (FrameLayout) view.findViewById(R.id.buttomfl);
-        tobuttom = (Button) view.findViewById(R.id.tobuttom);
-        nothing = (View) view.findViewById(R.id.nothing);
-        locbtn = (Button) view.findViewById(R.id.locbtn);
-        final String[] eventtype = new String[]{"实时", "活动预告", "求助"};
-        locbtn.setText(eventtype[PreferenceUtil.maptype]);
-        locbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
-                builder.setCancelable(true);
-                alert = builder
-                        .setItems(eventtype, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                locbtn.setText(eventtype[which]);
-                                PreferenceUtil.maptype = which;
-                                getEventByTypeAsyncHttpClientPost(PreferenceUtil.maptype);
-                            }
-                        }).create();
-                alert.show();
-                Window dialogWindow = alert.getWindow();
-                WindowManager m = getActivity().getWindowManager();
-                Display d = m.getDefaultDisplay(); // 获取屏幕宽、高度
-                WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-                Point size = new Point();
-                d.getSize(size);
-                p.width = (int) (size.x * 0.8); // 宽度设置为屏幕的0.65，根据实际情况调整
-                dialogWindow.setAttributes(p);
-            }
-        });
-
-
         return view;
-    }
-
-    private void showbuttom(int locationID, int type) {
-        ((MainActivity)getActivity()).setvisibility(false);
-        buttomfl.setVisibility(View.VISIBLE);
-        tobuttom.setVisibility(View.VISIBLE);
-        nothing.setVisibility(View.INVISIBLE);
-        FragmentManager fManager = getFragmentManager();
-        ListFragment nlFragment = new ListFragment(3);
-        Bundle bd = new Bundle();
-        bd.putInt("locationID", locationID);
-        bd.putInt("type", type);
-        nlFragment.setArguments(bd);
-        FragmentTransaction ft = fManager.beginTransaction();
-        ft.replace(R.id.buttomfl, nlFragment);
-        ft.commit();
-        tobuttom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tobuttom.setVisibility(View.GONE);
-                buttomfl.setVisibility(View.GONE);
-                nothing.setVisibility(View.GONE);
-                ((MainActivity)getActivity()).setvisibility(true);
-            }
-        });
-    }
-
-    private void hidebuttom() {
-        tobuttom.setVisibility(View.GONE);
-        buttomfl.setVisibility(View.GONE);
-        nothing.setVisibility(View.GONE);
-        ((MainActivity)getActivity()).setvisibility(true);
     }
 
     public void onStart(){

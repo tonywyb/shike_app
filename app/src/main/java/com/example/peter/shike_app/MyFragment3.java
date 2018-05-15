@@ -27,12 +27,12 @@ import java.io.UnsupportedEncodingException;
 
 public class MyFragment3 extends Fragment implements View.OnClickListener{
 
-    private Button myevent = null;
+    private Button myupload = null;
     private Button pwd = null;
     private Context mContext = null;
     private TextView name = null;
     private Button logout, about;
-    private Button mylove, myfans, mycollection, myhistory, mypoints;
+    private Button myfocustag;
 
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
@@ -44,7 +44,7 @@ public class MyFragment3 extends Fragment implements View.OnClickListener{
         name = (TextView) view.findViewById(R.id.name);
         if (PreferenceUtil.islogged)
             name.setText(PreferenceUtil.username);
-        myevent = (Button) view.findViewById(R.id.myevent);
+        myupload = (Button) view.findViewById(R.id.myupload);
         pwd = (Button) view.findViewById(R.id.pwd);
         about = (Button)view.findViewById(R.id.about);
         pwd.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +66,7 @@ public class MyFragment3 extends Fragment implements View.OnClickListener{
                 getActivity().finish();
             }
         });
-        myevent.setOnClickListener(new View.OnClickListener() {
+        myupload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (PreferenceUtil.islogged)
@@ -90,16 +90,8 @@ public class MyFragment3 extends Fragment implements View.OnClickListener{
                 alert.show();
             }
         });
-        mylove = (Button)view.findViewById(R.id.mylove);
-        myfans = (Button)view.findViewById(R.id.myfans);
-        mycollection = (Button)view.findViewById(R.id.mycollection);
-        myhistory = (Button)view.findViewById(R.id.myhistory);
-        mypoints = (Button)view.findViewById(R.id.mypoints);
-        mylove.setOnClickListener(this);
-        myfans.setOnClickListener(this);
-        mycollection.setOnClickListener(this);
-        myhistory.setOnClickListener(this);
-        mypoints.setOnClickListener(this);
+        myfocustag = (Button)view.findViewById(R.id.myfocustag);
+        myfocustag.setOnClickListener(this);
         return view;
     }
 
@@ -149,7 +141,7 @@ public class MyFragment3 extends Fragment implements View.OnClickListener{
                     else if(status == 0) {
                         //Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
                         int count = response.getInt("eventNum");
-                        myevent.setText(count+"\n发布事件");
+                        myupload.setText(count+"\n发布事件");
                     }
                 }catch (JSONException e) {
                     e.printStackTrace();

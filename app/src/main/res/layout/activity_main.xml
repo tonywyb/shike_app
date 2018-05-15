@@ -18,10 +18,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/tab_menu_bg"
-            android:drawableTop="@drawable/tab_menu_map"
+            android:drawableTop="@drawable/tab_menu_food"
             android:gravity="center"
             android:padding="2dp"
-            android:text="@string/map"
+            android:text="菜品发现"
             android:textColor="@drawable/tab_menu_text"
             android:textSize="12sp"
             android:visibility="visible" />
@@ -32,10 +32,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/tab_menu_bg"
-            android:drawableTop="@drawable/tab_menu_event"
+            android:drawableTop="@drawable/tab_menu_list"
             android:gravity="center"
             android:padding="2dp"
-            android:text="@string/event"
+            android:text="菜品列表"
             android:textColor="@drawable/tab_menu_text"
             android:textSize="12sp" />
 

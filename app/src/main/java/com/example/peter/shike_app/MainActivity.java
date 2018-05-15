@@ -13,8 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.mapapi.SDKInitializer;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener{
 
     private TextView txt_chat;
@@ -59,10 +57,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txt_chat=(TextView)findViewById(R.id.txt_map);
         txt_contract=(TextView)findViewById(R.id.txt_event);
         txt_me=(TextView)findViewById(R.id.txt_me);
-        drawable = ContextCompat.getDrawable(mContext, R.drawable.tab_menu_map);
+        drawable = ContextCompat.getDrawable(mContext, R.drawable.tab_menu_food);
         drawable.setBounds(0, 0, 80, 80);
         txt_chat.setCompoundDrawables(null, drawable, null, null);
-        drawable = ContextCompat.getDrawable(mContext, R.drawable.tab_menu_event);
+        drawable = ContextCompat.getDrawable(mContext, R.drawable.tab_menu_list);
         drawable.setBounds(0, 0, 80, 80);
         txt_contract.setCompoundDrawables(null, drawable, null, null);
         drawable = ContextCompat.getDrawable(mContext, R.drawable.tab_menu_me);

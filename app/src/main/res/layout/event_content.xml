@@ -15,7 +15,7 @@
             android:layout_height="55dp"
             android:background="#51a486"
             android:gravity="center"
-            android:text="事 件"
+            android:text="菜品详情"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:layout_alignParentTop="true" />
@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:text="事件标题: "
+                android:text="菜品名称: "
                 android:textColor="#000000"
                 android:textSize="18dp" />
 
@@ -106,6 +106,25 @@
                 android:textSize="18dp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/contentLinear3"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/contentLinear2"
+            android:layout_marginTop="11dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/ratingBar"
+                android:layout_marginLeft="20dp"
+                android:text="评分: "
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+
         <ImageView
             android:id="@+id/testImage"
             android:layout_width="100dp"
@@ -130,7 +149,7 @@
     <RelativeLayout
         android:id="@+id/contentRelative"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="100dp"
         android:layout_above="@+id/comment_fl"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
@@ -141,7 +160,7 @@
             android:layout_marginLeft="20dp"
             android:text="菜品描述: "
             android:textColor="#000000"
-            android:textSize="16dp" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/event_content"
