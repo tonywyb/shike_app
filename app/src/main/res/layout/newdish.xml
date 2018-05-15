@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="事件发布"
+            android:text="菜品发布"
             android:textColor="#FFFFFF"
             android:textSize="20dp" />
 
@@ -52,7 +52,7 @@
             android:background="#FFFFFF"
             android:padding="10dp"
             android:textColor="#2e2e2e"
-            android:hint="标题"
+            android:hint="菜品名称"
             android:textColorHint="#605f5f"
             android:textSize="15dp"/>
 
@@ -77,13 +77,13 @@
         <EditText
             android:id="@+id/content"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="120dp"
             android:gravity="start"
             android:padding="8dp"
             android:textColor="#2e2e2e"
             android:textSize="15dp"
             android:background="#FFFFFF"
-            android:hint="事件内容..."
+            android:hint="菜品描述..."
             android:textColorHint="#605f5f"/>
     </LinearLayout>
 
@@ -95,12 +95,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="25dp"
+        android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:text="选择事件类型:"
+        android:text="选择菜品类型:"
         android:textColor="#000000"
-        android:textSize="18dp"
+        android:textSize="16dp"
         android:layout_marginTop="20dp"
         android:background="#FFFFFF" />
 
@@ -119,31 +119,36 @@
 
         <RadioButton
             android:id="@+id/btn1"
-            android:layout_width="100dp"
+            android:layout_width="90dp"
             android:layout_height="match_parent"
             android:padding="7dp"
-            android:paddingLeft="5dp"
-            android:text="实时"
+            android:text="主食"
             android:textColor="#000000"
             android:textSize="16dp" />
 
         <RadioButton
             android:id="@+id/btn2"
-            android:layout_width="130dp"
+            android:layout_width="90dp"
             android:layout_height="match_parent"
             android:padding="7dp"
-            android:paddingLeft="5dp"
-            android:text="活动预告"
+            android:text="热菜"
             android:textColor="#000000"
             android:textSize="16dp" />
 
         <RadioButton
             android:id="@+id/btn3"
-            android:layout_width="100dp"
+            android:layout_width="90dp"
             android:layout_height="match_parent"
             android:padding="7dp"
-            android:paddingLeft="5dp"
-            android:text="求助"
+            android:text="凉菜"
+            android:textColor="#000000"
+            android:textSize="16dp" />
+        <RadioButton
+            android:id="@+id/btn4"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:padding="7dp"
+            android:text="其他"
             android:textColor="#000000"
             android:textSize="16dp" />
 
@@ -154,101 +159,6 @@
         android:layout_height="1dp"
         android:background="#dfdfdf" />
 
-    <LinearLayout
-        android:id="@+id/stime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:background="#FFFFFF">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="7dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="开始时间"
-                android:textColor="#000000"
-                android:textSize="18dp" />
-
-            <TextView
-                android:id="@+id/sdate_view"
-                style="@style/block_name" />
-
-            <ImageView
-                android:id="@+id/startDate"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@mipmap/date" />
-
-            <TextView
-                android:id="@+id/stime_view"
-                style="@style/block_name" />
-
-            <ImageView
-                android:id="@+id/startTime"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@mipmap/time" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#dfdfdf" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/etime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="#FFFFFF">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="7dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="结束时间"
-                android:textColor="#000000"
-                android:textSize="18dp" />
-
-            <TextView
-                android:id="@+id/edate_view"
-                style="@style/block_name" />
-
-            <ImageView
-                android:id="@+id/endDate"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:background="@mipmap/date"
-                android:visibility="visible" />
-
-            <TextView
-                android:id="@+id/etime_view"
-                style="@style/block_name" />
-
-            <ImageView
-                android:id="@+id/endTime"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@mipmap/time" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#dfdfdf" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/selectplace"
@@ -263,10 +173,10 @@
             android:layout_height="wrap_content"
             android:background="#00000000"
             android:gravity="left|center_vertical"
-            android:paddingLeft="25dp"
-            android:text="选择事件地点:"
+            android:paddingLeft="20dp"
+            android:text="选择食堂:"
             android:textColor="#000000"
-            android:textSize="18dp" />
+            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/loc"
@@ -281,5 +191,68 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#dfdfdf" />
+    <LinearLayout
+        android:id="@+id/selectTag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#FFFFFF">
+
+        <Button
+            android:id="@+id/list_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="20dp"
+            android:text="选择标签:"
+            android:textColor="#000000"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/tag"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:textSize="17dp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#dfdfdf" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="144dp">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/uploadPhoto"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="39dp"
+            android:text="上传图片（可选）:"
+            android:textColor="#000000"
+            android:textSize="14dp" />
+
+        <ImageView
+            android:id="@+id/uploadPhoto"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="11dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="12dp"
+            android:layout_toEndOf="@+id/textView3"
+            android:layout_toRightOf="@+id/textView3"
+            android:background="@drawable/grey_edge"
+            android:padding="1dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/addPhoto2" />
+    </RelativeLayout>
+
 
 </LinearLayout>

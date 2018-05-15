@@ -28,7 +28,7 @@ public class MyFragment2 extends Fragment {
             @Override
             public void onClick(View v) {
                 if (PreferenceUtil.islogged)
-                    startActivity(new Intent(getActivity(), NewEvent.class));
+                    startActivity(new Intent(getActivity(), NewDish.class));
                 else
                     Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
             }

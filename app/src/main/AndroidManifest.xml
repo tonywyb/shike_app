@@ -38,7 +38,7 @@
         <activity
             android:name="com.example.peter.shike_app.Login"
             android:windowSoftInputMode="stateVisible" />
-        <activity android:name="com.example.peter.shike_app.NewEvent" />
+        <activity android:name="com.example.peter.shike_app.NewDish" />
         <activity android:name="com.example.peter.shike_app.Signup" />
         <activity android:name="com.example.peter.shike_app.Myevent" />
         <activity
