@@ -85,14 +85,21 @@ public class Signup extends Activity{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        byte[] jo = RSA.encrypt(jsonObject.toString().getBytes());
         //将参数加入到参数对象中
         ByteArrayEntity entity = null;
-        try {
-            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
-            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        try {
+        entity = new ByteArrayEntity(jo);
+        entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+//            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
         //进行post请求
         client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
             //如果成功
