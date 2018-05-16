@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,16 +43,19 @@ public class dishActivity extends AppCompatActivity {
     private RelativeLayout rl_input;
     private TextView hide;
     private EditText comment_content;
-    private TextView helper;
-    private String mobile;
+
+
     private ImageView testImage;
+    private TextView dishScore;
+    private RatingBar scoreBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         setContentView(R.layout.event_content);
         mContext = dishActivity.this;
-        eventcontenttitle = (TextView) findViewById(R.id.eventcontenttitle);
+        /*eventcontenttitle = (TextView) findViewById(R.id.eventcontenttitle);
         eventcontentret = (Button) findViewById(R.id.eventcontentret);
         eventcontentret.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +63,7 @@ public class dishActivity extends AppCompatActivity {
                 finish();
             }
         });
-        reportbtn = (Button) findViewById(R.id.reportbtn);
+        reportbtn = (Button) findViewById(R.id.reportbtn);*/
         rl_input = (RelativeLayout)findViewById(R.id.rl_input);
         newComment = (ImageButton)findViewById(R.id.newComment);
         hide = (TextView)findViewById(R.id.hide_down);
@@ -72,17 +77,27 @@ public class dishActivity extends AppCompatActivity {
                 .load(picURL)
                 .fit()
                 .into(testImage);
+        dishScore = (TextView)findViewById(R.id.dishscore);
+        scoreBar = (RatingBar)findViewById(R.id.scoreBar);
+        dishScore.setText(String.valueOf(scoreBar.getNumStars()));
+        scoreBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                dishScore.setText(String.valueOf(rating));
+            }
+        });
 
-        Bundle bd = getIntent().getExtras();
+
+        /*Bundle bd = getIntent().getExtras();
         eventID = bd.getInt("eventID");
         which = bd.getInt("which");
         final Event event = PreferenceUtil.getEvent(eventID);
         event_title.setText(event.getTitle());
         event_content.setText(event.getDescription());
-        event_user.setText(event.getUsername());
+        event_user.setText(event.getUsername());*/
 
         newComment.setVisibility(View.GONE);
-        if (which != 1 && event.getType() != 2) {
+        if (which != 1) {
             newComment.setVisibility(View.VISIBLE);
             newComment.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -109,7 +124,7 @@ public class dishActivity extends AppCompatActivity {
                 }
             });
 
-            comment_send.setOnClickListener(new View.OnClickListener() {
+            /*comment_send.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (PreferenceUtil.islogged) {
@@ -141,7 +156,7 @@ public class dishActivity extends AppCompatActivity {
                         Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
                     }
                 }
-            });
+            });*/
         }
     }
     private void reportEventAsyncHttpClientPost(final int eventID, final Event event) {
@@ -184,7 +199,7 @@ public class dishActivity extends AppCompatActivity {
         return;
     }
 
-    public void postComment(final String comment, final int userID, final int eventID) {
+    /*public void postComment(final String comment, final int userID, final int eventID) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
@@ -237,5 +252,5 @@ public class dishActivity extends AppCompatActivity {
             }
         });
         return;
-    }
+    }*/
 }

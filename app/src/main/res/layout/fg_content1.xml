@@ -72,32 +72,6 @@
         android:layout_height="80dp"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@mipmap/rank"
-            android:layout_marginLeft="10dp"/>
-        <Button
-            android:id="@+id/dishrank"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="菜品评分排行"
-            android:gravity="left|center_vertical"
-            android:textSize="22sp"
-            android:textColor="#000000"
-            android:background="#FFFFFF"
-            android:layout_marginLeft="10dp"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="7dp"
-        android:background="#f5f5f5">
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:orientation="horizontal">
-        <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@mipmap/like"
@@ -113,6 +87,33 @@
             android:textColor="#000000"
             android:background="#FFFFFF"
             android:layout_marginLeft="20dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="7dp"
+        android:background="#f5f5f5">
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@mipmap/rank"
+            android:layout_marginLeft="10dp"/>
+        <Button
+            android:id="@+id/dishrank"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="菜品评分排行"
+            android:gravity="left|center_vertical"
+            android:textSize="22sp"
+            android:textColor="#000000"
+            android:background="#FFFFFF"
+            android:layout_marginLeft="10dp"/>
 
     </LinearLayout>
     <LinearLayout

@@ -42,19 +42,6 @@
             android:layout_weight="0.49">
 
             <EditText
-                android:id="@+id/suid"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:drawableLeft="@mipmap/ic_account_circle_black_24dp"
-                android:hint="请输入学号"
-                android:textColorHint="#717070"
-                android:textColor="#000000"
-                android:textSize="17sp"
-                android:drawablePadding="15dp"
-                android:paddingLeft="15dp"
-                android:background="@null"/>
-            <EditText
                 android:id="@+id/suusername"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

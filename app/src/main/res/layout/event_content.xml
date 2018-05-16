@@ -50,23 +50,24 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/contentRelative3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/relativeLayout2"
-        android:layout_above="@+id/view">
+
+        android:layout_marginTop="13dp">
 
         <LinearLayout
             android:id="@+id/contentLinear1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="13dp">
+            android:layout_alignParentStart="true">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:text="菜品名称: "
@@ -108,8 +109,8 @@
 
         <LinearLayout
             android:id="@+id/contentLinear3"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
+            android:layout_width="260dp"
+            android:layout_height="40dp"
             android:layout_below="@id/contentLinear2"
             android:layout_marginTop="11dp">
 
@@ -120,7 +121,23 @@
                 android:layout_marginLeft="20dp"
                 android:text="评分: "
                 android:textColor="#000000"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
+            <RatingBar
+                android:id="@+id/scoreBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:progressDrawable="@drawable/myratingbar"
+                android:numStars="5"
+                android:layout_marginLeft="10dp"
+                android:stepSize="0.5"
+                android:rating="3.0"/>
+            <TextView
+                android:id="@+id/dishscore"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textSize="18dp"
+                android:textColor="#000000"/>
 
         </LinearLayout>
 
@@ -129,11 +146,11 @@
             android:id="@+id/testImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginEnd="21dp"
-            android:layout_marginRight="21dp" />
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="11dp"
+            android:layout_marginRight="11dp" />
 
     </RelativeLayout>
 
@@ -142,15 +159,15 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#000000"
-        android:layout_above="@+id/contentRelative"
+        android:layout_below="@+id/contentRelative3"
         android:layout_marginTop="10dp"
         android:id="@+id/view" />
 
-    <RelativeLayout
-        android:id="@+id/contentRelative"
+    <LinearLayout
+        android:id="@+id/contentLinear4"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_above="@+id/comment_fl"
+        android:layout_below="@+id/view"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
@@ -170,7 +187,7 @@
             android:textColor="#000000"
             android:textSize="15dp" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/comment_fl"
