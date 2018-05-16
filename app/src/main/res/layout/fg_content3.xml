@@ -71,7 +71,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="120dp"
         android:orientation="vertical">
 
         <Button
@@ -90,6 +90,16 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="       我的上传"
+            android:gravity="left|center_vertical"
+            android:textSize="15sp"
+            android:textColor="#000000"
+            android:background="#FFFFFF"/>
+        <Button
+            android:id="@+id/myrate"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="       我的评分记录"
             android:gravity="left|center_vertical"
             android:textSize="15sp"
             android:textColor="#000000"
