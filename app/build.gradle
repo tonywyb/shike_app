@@ -41,4 +41,5 @@ dependencies {
     testCompile 'org.robolectric:robolectric:3.5.1'
     compile files('libs/BASE64.jar')
     compile 'com.zhihu.android:matisse:0.5.0-alpha3'
+    compile 'top.zibin:Luban:1.1.5'
 }

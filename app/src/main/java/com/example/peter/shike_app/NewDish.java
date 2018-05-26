@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -38,8 +39,12 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.lang.String;
+
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 public class NewDish extends Activity implements View.OnClickListener{
 
@@ -56,6 +61,8 @@ public class NewDish extends Activity implements View.OnClickListener{
     private Boolean hasbd = false;
 
     private ImageView upload;
+    private Uri dishUri;
+    private File dishPic;
     private static final int REQUEST_CODE_CHOOSE = 23;//定义请求码常量
     private static final int REQUESTCODE = 0;//定义请求码常量
 
@@ -93,10 +100,12 @@ public class NewDish extends Activity implements View.OnClickListener{
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK){
-            String path = "file://" + Matisse.obtainPathResult(data).get(0);
-            Toast.makeText(mContext, path, Toast.LENGTH_LONG).show();
+            dishUri = Matisse.obtainResult(data).get(0);
+            //String path = "file://" + Matisse.obtainPathResult(data).get(0);
+            //Toast.makeText(mContext, uri.toString(), Toast.LENGTH_LONG).show();
+
             Picasso.with(mContext)
-                    .load(path)
+                    .load(dishUri)
                     .placeholder(R.mipmap.addphoto2)
                     .fit()
                     .into(upload);
@@ -166,6 +175,26 @@ public class NewDish extends Activity implements View.OnClickListener{
                                     event.setType(((RadioButton)findViewById(radgroup.getCheckedRadioButtonId())).getText().toString());
                                     event.setDescription(content.getText().toString());
                                     event.setOutdate(0);
+
+                                    //compress the picture with Luban
+                                    Luban.with(mContext)
+                                            .load(dishUri)
+                                            .setCompressListener(new OnCompressListener() {
+                                                @Override
+                                                public void onStart() {
+                                                }
+
+                                                @Override
+                                                public void onSuccess(File file) {
+                                                    dishPic = file;
+                                                }
+
+                                                @Override
+                                                public void onError(Throwable e) {
+                                                    Toast.makeText(mContext, "图片压缩出错", Toast.LENGTH_LONG).show();
+                                                }
+                                            }).launch();
+
                                     eventByAsyncHttpClientPost(event);
                                     finish();
                                 }
