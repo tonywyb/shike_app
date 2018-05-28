@@ -148,23 +148,23 @@ public class NewDish extends Activity implements View.OnClickListener{
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (header.getText().toString().equals("")) {
-                                    Toast.makeText(mContext, "标题不能为空", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, "名称不能为空", Toast.LENGTH_SHORT).show();
                                     alert.dismiss();
                                 }
                                 else if (header.getText().toString().length() > 20) {
-                                    Toast.makeText(mContext, "标题不能超过20个字", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, "名称不能超过20个字", Toast.LENGTH_SHORT).show();
                                     alert.dismiss();
                                 }
                                 else if (content.getText().toString().equals("")) {
-                                    Toast.makeText(mContext, "事件内容不能为空", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, "菜品描述不能为空", Toast.LENGTH_SHORT).show();
                                     alert.dismiss();
                                 }
                                 else if (content.getText().toString().length() > 100) {
-                                    Toast.makeText(mContext, "事件内容不能超过100个字", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, "菜品描述不能超过100个字", Toast.LENGTH_SHORT).show();
                                     alert.dismiss();
                                 }
-                                else if (loc.getText().toString().equals("") && !hasbd) {
-                                    Toast.makeText(mContext, "请选择地点", Toast.LENGTH_SHORT).show();
+                                else if (loc.getText().toString().equals("")) {
+                                    Toast.makeText(mContext, "请选择食堂", Toast.LENGTH_SHORT).show();
                                     alert.dismiss();
                                 }
                                 else {
