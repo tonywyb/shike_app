@@ -71,17 +71,19 @@ public class Login extends Activity implements View.OnClickListener {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://120.25.232.47:8002/login/";
+        String url = "http://ch.huyunfan.cn/PHP/user/login/";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
-        userPass = getMD5(userPass);
+//        userPass = getMD5(userPass);
+
         try {
             jsonObject.put("userName",userName);
-            jsonObject.put("pwd",userPass);
+            jsonObject.put("password",userPass);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        byte[] jo = RSA.encrypt(jsonObject.toString().getBytes());
+        //byte[] jo = RSA.encrypt(jsonObject.toString().getBytes());
+        byte[] jo = jsonObject.toString().getBytes();
         //将参数加入到参数对象中
         ByteArrayEntity entity = null;
 //        try {
@@ -99,12 +101,13 @@ public class Login extends Activity implements View.OnClickListener {
                 try {
                     int status = response.getInt("loginStatus");
                     if (status == 1) {
-                        Toast.makeText(mContext, "用户名或密码输入错误",  Toast.LENGTH_LONG).show();
+                        String errMsg = response.getString("errMsg");
+                        Toast.makeText(mContext,  errMsg,  Toast.LENGTH_LONG).show();
                     }
                     else if(status == 0) {
                         PreferenceUtil.islogged = true;
                         PreferenceUtil.userID = response.getInt("userID");
-                        PreferenceUtil.username = username;
+//                        PreferenceUtil.username = username;
                         Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Login.this, MainActivity.class));
                         finish();
