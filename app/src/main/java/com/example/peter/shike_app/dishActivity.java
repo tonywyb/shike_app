@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -52,10 +51,9 @@ public class dishActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-        setContentView(R.layout.event_content);
+        setContentView(R.layout.dish_content);
         mContext = dishActivity.this;
-        /*eventcontenttitle = (TextView) findViewById(R.id.eventcontenttitle);
+        eventcontenttitle = (TextView) findViewById(R.id.eventcontenttitle);
         eventcontentret = (Button) findViewById(R.id.eventcontentret);
         eventcontentret.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,20 +61,21 @@ public class dishActivity extends AppCompatActivity {
                 finish();
             }
         });
-        reportbtn = (Button) findViewById(R.id.reportbtn);*/
+        reportbtn = (Button) findViewById(R.id.reportbtn);
         rl_input = (RelativeLayout)findViewById(R.id.rl_input);
         newComment = (ImageButton)findViewById(R.id.newComment);
         hide = (TextView)findViewById(R.id.hide_down);
         comment_content = (EditText)findViewById(R.id.comment_content);
         comment_send = (Button) findViewById(R.id.comment_send);
 
-        //test
+        //load the image
         testImage = (ImageView)findViewById(R.id.testImage);
         String picURL = "http://ch.huyunfan.cn/IMG_9211.JPG";
         Picasso.with(mContext)
                 .load(picURL)
                 .fit()
                 .into(testImage);
+
         dishScore = (TextView)findViewById(R.id.dishscore);
         scoreBar = (RatingBar)findViewById(R.id.scoreBar);
         dishScore.setText(String.valueOf(scoreBar.getNumStars()));
@@ -93,7 +92,7 @@ public class dishActivity extends AppCompatActivity {
         which = bd.getInt("which");
         final Event event = PreferenceUtil.getEvent(eventID);
         event_title.setText(event.getTitle());
-        event_content.setText(event.getDescription());
+        dish_content.setText(event.getDescription());
         event_user.setText(event.getUsername());*/
 
         newComment.setVisibility(View.GONE);
@@ -124,7 +123,7 @@ public class dishActivity extends AppCompatActivity {
                 }
             });
 
-            /*comment_send.setOnClickListener(new View.OnClickListener() {
+            comment_send.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (PreferenceUtil.islogged) {
@@ -156,7 +155,7 @@ public class dishActivity extends AppCompatActivity {
                         Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
                     }
                 }
-            });*/
+            });
         }
     }
     private void reportEventAsyncHttpClientPost(final int eventID, final Event event) {
@@ -199,7 +198,7 @@ public class dishActivity extends AppCompatActivity {
         return;
     }
 
-    /*public void postComment(final String comment, final int userID, final int eventID) {
+    public void postComment(final String comment, final int userID, final int eventID) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
@@ -210,7 +209,6 @@ public class dishActivity extends AppCompatActivity {
             jsonObject.put("content", comment);
             jsonObject.put("publisherID", userID);
             jsonObject.put("fatherID", eventID);
-            jsonObject.put("fatherType", "event");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -252,5 +250,5 @@ public class dishActivity extends AppCompatActivity {
             }
         });
         return;
-    }*/
+    }
 }

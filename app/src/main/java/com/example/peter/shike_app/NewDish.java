@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -40,6 +41,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.String;
 
@@ -62,7 +64,7 @@ public class NewDish extends Activity implements View.OnClickListener{
 
     private ImageView upload;
     private Uri dishUri;
-    private File dishPic;
+    private File dishPic = null;
     private static final int REQUEST_CODE_CHOOSE = 23;//定义请求码常量
     private static final int REQUESTCODE = 0;//定义请求码常量
 
@@ -129,6 +131,7 @@ public class NewDish extends Activity implements View.OnClickListener{
         exlist_lol.setOnClickListener(this);
 
         upload = (ImageView)findViewById(R.id.uploadPhoto);
+        radgroup = (RadioGroup)findViewById(R.id.radiogroup);
     }
 
     @Override
@@ -168,14 +171,13 @@ public class NewDish extends Activity implements View.OnClickListener{
                                     alert.dismiss();
                                 }
                                 else {
-                                    Event event = new Event();
-                                    event.setPublisherID(PreferenceUtil.userID);
-                                    event.setUsername(PreferenceUtil.username);
-                                    event.setTitle(header.getText().toString());
-                                    event.setType(((RadioButton)findViewById(radgroup.getCheckedRadioButtonId())).getText().toString());
-                                    event.setDescription(content.getText().toString());
-                                    event.setOutdate(0);
-
+                                    Dish dish = new Dish();
+                                    dish.setPublisherID(PreferenceUtil.userID);
+                                    dish.setPublisherName(PreferenceUtil.username);
+                                    dish.setName(header.getText().toString());
+                                    dish.setCategory(((RadioButton)findViewById(radgroup.getCheckedRadioButtonId())).getText().toString());
+                                    dish.setDescription(content.getText().toString());
+                                    dish.setCanteenID(PreferenceUtil.getPlace(loc.getText().toString()));
                                     //compress the picture with Luban
                                     Luban.with(mContext)
                                             .load(dishUri)
@@ -183,19 +185,16 @@ public class NewDish extends Activity implements View.OnClickListener{
                                                 @Override
                                                 public void onStart() {
                                                 }
-
                                                 @Override
                                                 public void onSuccess(File file) {
                                                     dishPic = file;
                                                 }
-
                                                 @Override
                                                 public void onError(Throwable e) {
                                                     Toast.makeText(mContext, "图片压缩出错", Toast.LENGTH_LONG).show();
                                                 }
                                             }).launch();
-
-                                    eventByAsyncHttpClientPost(event);
+                                    dishByAsyncHttpClientPost(dish);
                                     finish();
                                 }
                             }
@@ -209,7 +208,7 @@ public class NewDish extends Activity implements View.OnClickListener{
                 alert = null;
                 builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
                 builder.setCancelable(true);
-                alert = builder.setTitle("地点选择")
+                alert = builder.setTitle("食堂选择")
                         .setItems(PreferenceUtil.canteen, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -231,14 +230,14 @@ public class NewDish extends Activity implements View.OnClickListener{
                 alert.dismiss();
         }
     }
-    public void eventByAsyncHttpClientPost(final Event event) {
+    public void dishByAsyncHttpClientPost(final Dish dish) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
         String url = "http://120.25.232.47:8002/postEvent/";
         //String url = "http://www.baidu.com";
         //请求的参数对象
-        JSONObject jsonObject = new JSONObject();
+        /*JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("title", event.title);
             jsonObject.put("locationID", event.locationID);
@@ -260,9 +259,9 @@ public class NewDish extends Activity implements View.OnClickListener{
             entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
         //进行post请求
-        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
+        /*client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
             //如果成功
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -274,6 +273,36 @@ public class NewDish extends Activity implements View.OnClickListener{
                 }
                 PreferenceUtil.datas.add(event);
                 PreferenceUtil.myAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(mContext, "发布失败", Toast.LENGTH_SHORT).show();
+            }
+        });*/
+        RequestParams params = new RequestParams();
+        try{
+            if (dishPic != null)
+                params.put("photo", dishPic);
+            params.put("name", dish.getName());
+            params.put("canteenID", dish.getCanteenID());
+            params.put("description", dish.getDescription());
+            params.put("category", dish.getCategory());
+            params.put("publisherID", dish.getPublisherID());
+            params.put("publisherName", dish.getPublisherName());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        client.post(url, params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    dish.setID(response.getInt("eventID"));
+                    Toast.makeText(mContext, "success", Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {

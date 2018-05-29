@@ -17,6 +17,11 @@ public class PreferenceUtil {
     public static ArrayList<Event> datas = new ArrayList<Event>();
     public static ArrayList<Event> mydatas = new ArrayList<Event>();
     public static ArrayList<Event> locdatas = new ArrayList<Event>();
+
+    public static ArrayList<Dish> dishDatas = new ArrayList<Dish>();
+    public static ArrayList<Dish> myDishDatas = new ArrayList<Dish>();
+    public static ArrayList<Dish> locDishdatas = new ArrayList<Dish>();
+
     public static ArrayList<Comment> commentdatas = new ArrayList<Comment>();
     public static int maptype = 0;
     public static boolean islogged = false;
@@ -36,6 +41,17 @@ public class PreferenceUtil {
         }
         return null;
     }
+
+    public static Dish getDish(int dishID){
+        for (int i = 0; i < dishDatas.size(); i++)
+        {
+            if (dishDatas.get(i).getID() == dishID){
+                return dishDatas.get(i);
+            }
+        }
+        return null;
+    }
+
     public static void deletebyID(int eventID) {
         for (int i = 0; i < datas.size(); i++) {
             if (datas.get(i).getEventId() == eventID) {
@@ -46,6 +62,20 @@ public class PreferenceUtil {
         for (int i = 0; i < mydatas.size(); i++) {
             if (mydatas.get(i).getEventId() == eventID) {
                 mydatas.remove(i);
+                break;
+            }
+        }
+    }
+    public static void deletebyDishID(int dishID) {
+        for (int i = 0; i < dishDatas.size(); i++) {
+            if (dishDatas.get(i).getID() == dishID) {
+                dishDatas.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < myDishDatas.size(); i++) {
+            if (myDishDatas.get(i).getID() == dishID) {
+                myDishDatas.remove(i);
                 break;
             }
         }
