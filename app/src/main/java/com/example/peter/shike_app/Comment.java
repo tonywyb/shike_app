@@ -4,7 +4,6 @@ public class Comment {
 
     public int commentID;
     public String content;
-    public String fatherType;
     public int fatherID;
     public int publisherID;
     public String username;
@@ -14,9 +13,6 @@ public class Comment {
     }
     public String getContent() {
         return this.content;
-    }
-    public String getFatherType() {
-        return this.fatherType;
     }
     public int getFatherID() {
         return this.fatherID;
@@ -33,9 +29,6 @@ public class Comment {
     }
     public void setContent(String content) {
         this.content = content;
-    }
-    public void setFatherType(String fatherType) {
-        this.fatherType = fatherType;
     }
     public void setFatherID(int fatherID) {
         this.fatherID = fatherID;

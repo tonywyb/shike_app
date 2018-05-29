@@ -31,13 +31,13 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 
 public class dishActivity extends AppCompatActivity {
-
-    private int which, eventID;
+    
+    private int which, dishID;
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
     private Context mContext;
     private Button eventcontentret, deletebtn, reportbtn, comment_send, contactBtn;
-    private TextView event_content, event_title, eventcontenttitle, event_user;
+    private TextView dish_content, dish_name, eventcontenttitle, dish_publisher;
     private ImageButton newComment;
     private RelativeLayout rl_input;
     private TextView hide;
@@ -68,32 +68,27 @@ public class dishActivity extends AppCompatActivity {
         comment_content = (EditText)findViewById(R.id.comment_content);
         comment_send = (Button) findViewById(R.id.comment_send);
 
-        //load the image
         testImage = (ImageView)findViewById(R.id.testImage);
-        String picURL = "http://ch.huyunfan.cn/IMG_9211.JPG";
-        Picasso.with(mContext)
-                .load(picURL)
-                .fit()
-                .into(testImage);
-
         dishScore = (TextView)findViewById(R.id.dishscore);
         scoreBar = (RatingBar)findViewById(R.id.scoreBar);
         dishScore.setText(String.valueOf(scoreBar.getNumStars()));
-        scoreBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                dishScore.setText(String.valueOf(rating));
-            }
-        });
 
 
-        /*Bundle bd = getIntent().getExtras();
-        eventID = bd.getInt("eventID");
+        Bundle bd = getIntent().getExtras();
+        dishID = bd.getInt("dishID");
         which = bd.getInt("which");
-        final Event event = PreferenceUtil.getEvent(eventID);
-        event_title.setText(event.getTitle());
-        dish_content.setText(event.getDescription());
-        event_user.setText(event.getUsername());*/
+        final Dish dish = PreferenceUtil.getDish(dishID);
+        dish_name.setText(dish.getName());
+        dish_content.setText(dish.getDescription());
+        dish_publisher.setText("匿名天使");
+        
+        //load the image
+        if (dish.getPictureURL() != "") {
+            Picasso.with(mContext)
+                    .load(dish.getPictureURL())
+                    .fit()
+                    .into(testImage);
+        }
 
         newComment.setVisibility(View.GONE);
         if (which != 1) {
@@ -144,7 +139,7 @@ public class dishActivity extends AppCompatActivity {
                                             Toast.makeText(mContext, "评论不能为空", Toast.LENGTH_SHORT).show();
                                             alert.dismiss();
                                         } else {
-                                            postComment(comment, PreferenceUtil.userID, eventID);
+                                            postComment(comment, PreferenceUtil.userID, dishID);
                                             alert.dismiss();
                                             comment_content.setText("");
                                         }
@@ -232,7 +227,6 @@ public class dishActivity extends AppCompatActivity {
                     tmpcomment.setCommentID(response.getInt("commentID"));
                     tmpcomment.setFatherID(eventID);
                     tmpcomment.setContent(comment);
-                    tmpcomment.setFatherType("event");
                     tmpcomment.setPublisherID(userID);
                     tmpcomment.setUsername(PreferenceUtil.username);
                 } catch (JSONException e) {

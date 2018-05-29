@@ -64,6 +64,7 @@ public class NewDish extends Activity implements View.OnClickListener{
 
     private ImageView upload;
     private Uri dishUri;
+    private String dishPath;
     private File dishPic = null;
     private static final int REQUEST_CODE_CHOOSE = 23;//定义请求码常量
     private static final int REQUESTCODE = 0;//定义请求码常量
@@ -102,12 +103,13 @@ public class NewDish extends Activity implements View.OnClickListener{
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK){
-            dishUri = Matisse.obtainResult(data).get(0);
-            //String path = "file://" + Matisse.obtainPathResult(data).get(0);
+            //dishUri = Matisse.obtainResult(data).get(0);
+            dishPath = Matisse.obtainPathResult(data).get(0);
+            String tempPath = "file://" + Matisse.obtainPathResult(data).get(0);
             //Toast.makeText(mContext, uri.toString(), Toast.LENGTH_LONG).show();
 
             Picasso.with(mContext)
-                    .load(dishUri)
+                    .load(tempPath)
                     .placeholder(R.mipmap.addphoto2)
                     .fit()
                     .into(upload);
@@ -171,16 +173,17 @@ public class NewDish extends Activity implements View.OnClickListener{
                                     alert.dismiss();
                                 }
                                 else {
-                                    Dish dish = new Dish();
+                                    final Dish dish = new Dish();
                                     dish.setPublisherID(PreferenceUtil.userID);
                                     dish.setPublisherName(PreferenceUtil.username);
                                     dish.setName(header.getText().toString());
-                                    dish.setCategory(((RadioButton)findViewById(radgroup.getCheckedRadioButtonId())).getText().toString());
+                                    //dish.setCategory(((RadioButton)findViewById(radgroup.getCheckedRadioButtonId())).getText().toString());
                                     dish.setDescription(content.getText().toString());
                                     dish.setCanteenID(PreferenceUtil.getPlace(loc.getText().toString()));
+                                    dishPic = new File(dishPath);
                                     //compress the picture with Luban
-                                    Luban.with(mContext)
-                                            .load(dishUri)
+                                    /*Luban.with(mContext)
+                                            .load(tempPic)
                                             .setCompressListener(new OnCompressListener() {
                                                 @Override
                                                 public void onStart() {
@@ -188,12 +191,14 @@ public class NewDish extends Activity implements View.OnClickListener{
                                                 @Override
                                                 public void onSuccess(File file) {
                                                     dishPic = file;
+                                                    dishByAsyncHttpClientPost(dish);
+                                                    finish();
                                                 }
                                                 @Override
                                                 public void onError(Throwable e) {
                                                     Toast.makeText(mContext, "图片压缩出错", Toast.LENGTH_LONG).show();
                                                 }
-                                            }).launch();
+                                            }).launch();*/
                                     dishByAsyncHttpClientPost(dish);
                                     finish();
                                 }
@@ -234,62 +239,19 @@ public class NewDish extends Activity implements View.OnClickListener{
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://120.25.232.47:8002/postEvent/";
-        //String url = "http://www.baidu.com";
-        //请求的参数对象
-        /*JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("title", event.title);
-            jsonObject.put("locationID", event.locationID);
-            jsonObject.put("locationX", event.locationX);
-            jsonObject.put("locationY", event.locationY);
-            jsonObject.put("beginTime", event.beginTime);
-            jsonObject.put("endTime", event.endTime);
-            jsonObject.put("type", event.type);
-            jsonObject.put("publisherID", PreferenceUtil.userID);
-            jsonObject.put("description", event.description);
-            jsonObject.put("outdate", event.outdate);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        //将参数加入到参数对象中
-        ByteArrayEntity entity = null;
-        try {
-            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
-            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }*/
-        //进行post请求
-        /*client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
-            //如果成功
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                try {
-                    event.setEventID(response.getInt("eventID"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                PreferenceUtil.datas.add(event);
-                PreferenceUtil.myAdapter.notifyDataSetChanged();
-            }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-                Toast.makeText(mContext, "发布失败", Toast.LENGTH_SHORT).show();
-            }
-        });*/
+        String url = "http://ch.huyunfan.cn/PHP/dish/addDish.php";
         RequestParams params = new RequestParams();
         try{
-            if (dishPic != null)
-                params.put("photo", dishPic);
+            File photo = null;
+            if (dishPath != null)
+                photo = new File(dishPath);
+            if (photo != null)
+                params.put("photo", photo);
             params.put("name", dish.getName());
             params.put("canteenID", dish.getCanteenID());
             params.put("description", dish.getDescription());
-            params.put("category", dish.getCategory());
+            //params.put("category", dish.getCategory());
             params.put("publisherID", dish.getPublisherID());
-            params.put("publisherName", dish.getPublisherName());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -298,8 +260,11 @@ public class NewDish extends Activity implements View.OnClickListener{
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 try {
-                    dish.setID(response.getInt("eventID"));
-                    Toast.makeText(mContext, "success", Toast.LENGTH_LONG).show();
+                    int result = (response.getInt("addDishStatus"));
+                    if (result == 0)
+                        Toast.makeText(mContext, "发布成功", Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(mContext, "发布失败", Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -355,7 +355,6 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                                 comment.setCommentID(temp.getInt("commentID"));
                                 comment.setContent(temp.getString("content"));
                                 comment.setFatherID(temp.getInt("fatherID"));
-                                comment.setFatherType(temp.getString("fatherType"));
                                 comment.setPublisherID(temp.getInt("publisherID"));
                                 comment.setUsername(temp.getString("username"));
                                 PreferenceUtil.commentdatas.add(comment);
