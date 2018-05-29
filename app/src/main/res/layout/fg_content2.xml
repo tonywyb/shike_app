@@ -10,7 +10,7 @@
         android:layout_height="55dp"
         android:background="@color/zhihu_primary"
         android:gravity="center"
-        android:text="事 件"
+        android:text="食 堂"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:layout_alignParentTop="true" />

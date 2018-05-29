@@ -46,13 +46,30 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         View view = inflater.inflate(R.layout.eventlist, container, false);
         mContext = getActivity();
         list_event = (ListView) view.findViewById(R.id.list_event);
+
+        for(int i = 0; i < 14; i ++)
+            PreferenceUtil.canteenDatas.add(PreferenceUtil.canteen[i]);
+
         if (which == 0) {
+
+            PreferenceUtil.canteenAdapter = new ReuseableAdapter<String>(PreferenceUtil.canteenDatas, R.layout.list_item) {
+                @Override
+                public void bindView(ViewHolder holder, String obj) {
+                    holder.setText(R.id.txt_item_title, obj);
+                }
+            };
+
+            list_event.setAdapter(PreferenceUtil.canteenAdapter);
+            list_event.setOnItemClickListener(this);
+            list_event.setOnItemLongClickListener(this);
+            /*
             PreferenceUtil.myAdapter = new MyAdapter(PreferenceUtil.datas, getActivity());
             list_event.setAdapter(PreferenceUtil.myAdapter);
             PreferenceUtil.datas.clear();
             getEventAsyncHttpClientPost();
             list_event.setOnItemClickListener(this);
             list_event.setOnItemLongClickListener(this);
+            */
         }
         else if (which == 1) {
             PreferenceUtil.myAdapter2 = new MyAdapter(PreferenceUtil.mydatas, getActivity());
@@ -85,7 +102,8 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         int eventID = 0;
         switch (which) {
             case 0:
-                eventID = PreferenceUtil.datas.get(position).getEventId();
+                eventID = position;
+                //eventID = PreferenceUtil.datas.get(position).getEventId();
                 break;
             case 1:
                 eventID = PreferenceUtil.mydatas.get(position).getEventId();

@@ -13,11 +13,13 @@ public class PreferenceUtil {
     public static MyAdapter myAdapter = null;
     public static MyAdapter myAdapter2 = null;
     public static MyAdapter myAdapterloc = null;
+    public static ReuseableAdapter canteenAdapter = null;
     public static MyAdapterforComment myAdapterforComment = null;
     public static ArrayList<Event> datas = new ArrayList<Event>();
     public static ArrayList<Event> mydatas = new ArrayList<Event>();
     public static ArrayList<Event> locdatas = new ArrayList<Event>();
 
+    public static ArrayList<String> canteenDatas = new ArrayList<String>();
     public static ArrayList<Dish> dishDatas = new ArrayList<Dish>();
     public static ArrayList<Dish> myDishDatas = new ArrayList<Dish>();
     public static ArrayList<Dish> locDishdatas = new ArrayList<Dish>();
