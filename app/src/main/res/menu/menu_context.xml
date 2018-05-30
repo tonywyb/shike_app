@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="none">
+        <item android:id="@+id/xueyi" android:title="学一食堂"/>
+        <item android:id="@+id/xuewu" android:title="学五食堂"/>
+        <item android:id="@+id/yiyuan1" android:title="艺园食堂"/>
+        <item android:id="@+id/yiyuan2" android:title="艺园二楼"/>
+        <item android:id="@+id/nongyuan1" android:title="农园一楼"/>
+        <item android:id="@+id/nongyuan2" android:title="农园二楼"/>
+        <item android:id="@+id/nongyuan3" android:title="艺园三楼"/>
+        <item android:id="@+id/shaoyuan1" android:title="勺园一楼"/>
+        <item android:id="@+id/shaoyuan2" android:title="勺园二楼"/>
+        <item android:id="@+id/yannan" android:title="燕南食堂"/>
+        <item android:id="@+id/tongyuan" android:title="佟园食堂"/>
+        <item android:id="@+id/changchun" android:title="畅春园食堂"/>
+        <item android:id="@+id/yixuebu" android:title="医学部"/>
+        <item android:id="@+id/songlin" android:title="松林包子"/>
+    </group>
+</menu>

@@ -7,11 +7,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -27,6 +32,8 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
+import static com.baidu.location.d.j.v;
+
 public class ListFragment extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener{
 
     private ListView list_event;
@@ -34,6 +41,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
     private Context mContext;
     private AlertDialog alert;
     private AlertDialog.Builder builder;
+    private TextView canteen;
 
     public ListFragment() {}
     @SuppressLint("ValidFragment")
@@ -44,24 +52,26 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.eventlist, container, false);
-        mContext = getActivity();
+        //mContext = getActivity();
         list_event = (ListView) view.findViewById(R.id.list_event);
-
-        for(int i = 0; i < 14; i ++)
-            PreferenceUtil.canteenDatas.add(PreferenceUtil.canteen[i]);
+        canteen = (TextView) view.findViewById(R.id.can);
+        registerForContextMenu(canteen);
 
         if (which == 0) {
+            for(int i = 0; i < 7; i ++)
+                PreferenceUtil.tempDishDatas.add(PreferenceUtil.temp_dish[0]);
 
-            PreferenceUtil.canteenAdapter = new ReuseableAdapter<String>(PreferenceUtil.canteenDatas, R.layout.list_item) {
+            PreferenceUtil.tempDishAdapter = new ReuseableAdapter<String>(PreferenceUtil.tempDishDatas, R.layout.list_item) {
                 @Override
                 public void bindView(ViewHolder holder, String obj) {
                     holder.setText(R.id.txt_item_title, obj);
                 }
             };
 
-            list_event.setAdapter(PreferenceUtil.canteenAdapter);
+            list_event.setAdapter(PreferenceUtil.tempDishAdapter);
             list_event.setOnItemClickListener(this);
             list_event.setOnItemLongClickListener(this);
+
             /*
             PreferenceUtil.myAdapter = new MyAdapter(PreferenceUtil.datas, getActivity());
             list_event.setAdapter(PreferenceUtil.myAdapter);
@@ -94,6 +104,78 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
             getCommentByFather(bd.getInt("fatherID"));
         }
         return view;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflator = getActivity().getMenuInflater();
+        inflator.inflate(R.menu.menu_context, menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        PreferenceUtil.tempDishDatas.clear();
+        switch (item.getItemId()) {
+            case R.id.xueyi:
+                for(int i = 0; i < 7; i ++)
+                    PreferenceUtil.tempDishDatas.add(PreferenceUtil.temp_dish[0]);
+                break;
+            case R.id.xuewu:
+                for(int i = 0; i < 7; i ++)
+                    PreferenceUtil.tempDishDatas.add(PreferenceUtil.temp_dish[1]);
+                break;
+            case R.id.yiyuan1:
+                for(int i = 0; i < 7; i ++)
+                    PreferenceUtil.tempDishDatas.add(PreferenceUtil.temp_dish[2]);
+                break;
+            case R.id.yiyuan2:
+                for(int i = 0; i < 7; i ++)
+                    PreferenceUtil.tempDishDatas.add(PreferenceUtil.temp_dish[3]);
+                break;
+            case R.id.nongyuan1:
+                for(int i = 0; i < 7; i ++)
+                    PreferenceUtil.tempDishDatas.add(PreferenceUtil.temp_dish[4]);
+                break;
+            case R.id.nongyuan2:
+                for(int i = 0; i < 7; i ++)
+                    PreferenceUtil.tempDishDatas.add(PreferenceUtil.temp_dish[5]);
+                break;
+            case R.id.nongyuan3:
+                for(int i = 0; i < 7; i ++)
+                    PreferenceUtil.tempDishDatas.add(PreferenceUtil.temp_dish[6]);
+                break;
+            case R.id.shaoyuan1:
+                for(int i = 0; i < 7; i ++)
+                    PreferenceUtil.tempDishDatas.add(PreferenceUtil.temp_dish[7]);
+                break;
+            case R.id.shaoyuan2:
+                for(int i = 0; i < 7; i ++)
+                    PreferenceUtil.tempDishDatas.add(PreferenceUtil.temp_dish[8]);
+                break;
+            case R.id.yannan:
+                for(int i = 0; i < 7; i ++)
+                    PreferenceUtil.tempDishDatas.add(PreferenceUtil.temp_dish[9]);
+                break;
+            case R.id.tongyuan:
+                for(int i = 0; i < 7; i ++)
+                    PreferenceUtil.tempDishDatas.add(PreferenceUtil.temp_dish[10]);
+                break;
+            case R.id.changchun:
+                for(int i = 0; i < 7; i ++)
+                    PreferenceUtil.tempDishDatas.add(PreferenceUtil.temp_dish[11]);
+                break;
+            case R.id.yixuebu:
+                for(int i = 0; i < 7; i ++)
+                    PreferenceUtil.tempDishDatas.add(PreferenceUtil.temp_dish[12]);
+                break;
+            case R.id.songlin:
+                for(int i = 0; i < 7; i ++)
+                    PreferenceUtil.tempDishDatas.add(PreferenceUtil.temp_dish[13]);
+                break;
+        }
+        PreferenceUtil.tempDishAdapter.notifyDataSetChanged();
+        return true;
     }
 
     @Override
