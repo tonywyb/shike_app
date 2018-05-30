@@ -31,11 +31,18 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private ListView list_event;
     private int which;
+    private int myCanteen;
     private Context mContext;
     private AlertDialog alert;
     private AlertDialog.Builder builder;
 
     public ListFragment() {}
+    @SuppressLint("ValidFragment")
+    public ListFragment(int which, int myCanteen) {
+        this.myCanteen = myCanteen;
+        this.which = which;
+    }
+
     @SuppressLint("ValidFragment")
     public ListFragment(int which) {
         this.which = which;
@@ -44,24 +51,23 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.eventlist, container, false);
-        mContext = getActivity();
+        //mContext = getActivity();
         list_event = (ListView) view.findViewById(R.id.list_event);
 
-        for(int i = 0; i < 14; i ++)
-            PreferenceUtil.canteenDatas.add(PreferenceUtil.canteen[i]);
-
         if (which == 0) {
-
-            PreferenceUtil.canteenAdapter = new ReuseableAdapter<String>(PreferenceUtil.canteenDatas, R.layout.list_item) {
+            PreferenceUtil.dishAdapter = new ReuseableAdapter<Dish>(PreferenceUtil.dishDatas, R.layout.list_item) {
                 @Override
-                public void bindView(ViewHolder holder, String obj) {
-                    holder.setText(R.id.txt_item_title, obj);
+                public void bindView(ViewHolder holder, Dish obj) {
+                    holder.setText(R.id.txt_item_title, obj.getName());
                 }
             };
 
-            list_event.setAdapter(PreferenceUtil.canteenAdapter);
+            list_event.setAdapter(PreferenceUtil.dishAdapter);
+            PreferenceUtil.dishDatas.clear();
+            getDishAsyncPHPClientPost();
             list_event.setOnItemClickListener(this);
             list_event.setOnItemLongClickListener(this);
+
             /*
             PreferenceUtil.myAdapter = new MyAdapter(PreferenceUtil.datas, getActivity());
             list_event.setAdapter(PreferenceUtil.myAdapter);
@@ -100,19 +106,22 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Bundle bd = new Bundle();
         int eventID = 0;
+        int dishID = 0;
         switch (which) {
             case 0:
-                eventID = position;
+                dishID = PreferenceUtil.dishDatas.get(position).getID();
                 //eventID = PreferenceUtil.datas.get(position).getEventId();
                 break;
             case 1:
-                eventID = PreferenceUtil.mydatas.get(position).getEventId();
+                dishID = PreferenceUtil.myDishDatas.get(position).getID();
+                //eventID = PreferenceUtil.mydatas.get(position).getEventId();
                 break;
             case 3:
-                eventID = PreferenceUtil.locdatas.get(position).getEventId();
+                dishID = PreferenceUtil.locDishdatas.get(position).getID();
+                //eventID = PreferenceUtil.locdatas.get(position).getEventId();
                 break;
         }
-        bd.putInt("eventID", eventID);
+        bd.putInt("dishID", dishID);
         bd.putInt("which", which);
         Intent it = new Intent(getActivity(), dishActivity.class);
         it.putExtras(bd);
@@ -183,6 +192,69 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
     }
 
+    private void getDishAsyncPHPClientPost() {
+        //创建异步请求对象
+        AsyncHttpClient client = new AsyncHttpClient();
+        //输入要请求的url
+        String url = "PHP/dish/searchDish.php";
+        //请求的参数对象
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("canteenID", this.myCanteen + 1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //将参数加入到参数对象中
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //进行post请求
+        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
+            //如果成功
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    int status = response.getInt("searchDishStatus");
+                    if (status == 1) {
+                        Toast.makeText(mContext, "status code is:"+ statusCode+ "\n更新失败!\n", Toast.LENGTH_LONG).show();
+                    }
+                    else if(status == 0) {
+                        //Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
+                        int count = response.getInt("dishNum");
+                        if (count > 0) {
+                            JSONArray dishList = response.getJSONArray("dishList");
+                            //Toast.makeText(mContext, dishList.toString(), Toast.LENGTH_LONG).show();
+                            for (int i = 0; i < count; i ++) {
+                                JSONObject temp = dishList.getJSONObject(i);
+                                Dish dish = new Dish();
+                                dish.setID(temp.getInt("dishID"));
+                                dish.setCanteenID(temp.getInt("canteenID"));
+                                dish.setName(temp.getString("dishName"));
+                                PreferenceUtil.dishDatas.add(dish);
+                            }
+                            PreferenceUtil.dishAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
+            }
+        });
+        return;
+    }
+/*
     private void getEventAsyncHttpClientPost() {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
@@ -253,7 +325,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         return;
 
     }
-
+*/
     private void getEventByLocationID(final int locationID, final int type) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();

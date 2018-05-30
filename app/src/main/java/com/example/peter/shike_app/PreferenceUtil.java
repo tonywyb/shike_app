@@ -13,13 +13,13 @@ public class PreferenceUtil {
     public static MyAdapter myAdapter = null;
     public static MyAdapter myAdapter2 = null;
     public static MyAdapter myAdapterloc = null;
-    public static ReuseableAdapter canteenAdapter = null;
+    public static ReuseableAdapter dishAdapter = null;
     public static MyAdapterforComment myAdapterforComment = null;
     public static ArrayList<Event> datas = new ArrayList<Event>();
     public static ArrayList<Event> mydatas = new ArrayList<Event>();
     public static ArrayList<Event> locdatas = new ArrayList<Event>();
 
-    public static ArrayList<String> canteenDatas = new ArrayList<String>();
+    //public static ArrayList<String> tempDishDatas = new ArrayList<String>();
     public static ArrayList<Dish> dishDatas = new ArrayList<Dish>();
     public static ArrayList<Dish> myDishDatas = new ArrayList<Dish>();
     public static ArrayList<Dish> locDishdatas = new ArrayList<Dish>();
@@ -30,11 +30,16 @@ public class PreferenceUtil {
     public static int userID;
     public static String username;
     public static final String SHOW_GUIDE = "showguide";
-    public static final String[] canteen = {"null", "学一食堂", "学五食堂", "艺园食堂",
+
+    public static final String[] canteen = {"学一食堂", "学五食堂", "艺园食堂",
             "艺园二楼", "农园一楼", "农园二楼", "农园三楼", "勺园一楼",
             "勺园二楼", "燕南食堂", "佟园食堂", "畅春园食堂", "医学部",
             "松林包子"};
-    public static final String[] tag = {"null", "tag1", "tag2", "tag3"};
+    public static final String[] temp_dish = {"学一菜", "学五菜", "艺园菜",
+            "艺园菜", "农园菜", "农园二楼菜", "农园三楼菜", "勺园一楼菜",
+            "勺园二楼菜", "燕南菜", "佟园菜", "畅春园菜", "医学菜",
+            "松林菜"};
+
     public static Event getEvent(int eventID) {
         for (int i = 0; i < datas.size(); i++) {
             if (datas.get(i).getEventId() == eventID) {
