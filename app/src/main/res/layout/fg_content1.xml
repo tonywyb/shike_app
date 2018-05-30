@@ -45,8 +45,8 @@
         android:layout_height="80dp"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:src="@mipmap/touzi"
             android:layout_marginLeft="10dp"/>
         <Button
@@ -72,8 +72,8 @@
         android:layout_height="80dp"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@mipmap/like"
             android:layout_marginLeft="20dp"
             android:layout_gravity="center"/>
@@ -100,8 +100,8 @@
         android:layout_height="80dp"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:src="@mipmap/rank"
             android:layout_marginLeft="10dp"/>
         <Button

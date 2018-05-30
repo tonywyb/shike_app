@@ -44,6 +44,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.String;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
@@ -62,6 +64,9 @@ public class NewDish extends Activity implements View.OnClickListener{
     private EditText header, content;
     private Boolean hasbd = false;
 
+    private Button list_tag;
+    private TextView tags;
+    private boolean[] checkItems;
     private ImageView upload;
     private Uri dishUri;
     private String dishPath;
@@ -134,6 +139,10 @@ public class NewDish extends Activity implements View.OnClickListener{
 
         upload = (ImageView)findViewById(R.id.uploadPhoto);
         radgroup = (RadioGroup)findViewById(R.id.radiogroup);
+        list_tag = (Button)findViewById(R.id.list_tag);
+        tags = (TextView)findViewById(R.id.tag);
+
+        list_tag.setOnClickListener(this);
     }
 
     @Override
@@ -180,10 +189,9 @@ public class NewDish extends Activity implements View.OnClickListener{
                                     //dish.setCategory(((RadioButton)findViewById(radgroup.getCheckedRadioButtonId())).getText().toString());
                                     dish.setDescription(content.getText().toString());
                                     dish.setCanteenID(PreferenceUtil.getPlace(loc.getText().toString()));
-                                    dishPic = new File(dishPath);
                                     //compress the picture with Luban
-                                    /*Luban.with(mContext)
-                                            .load(tempPic)
+                                    Luban.with(mContext)
+                                            .load(dishPath)
                                             .setCompressListener(new OnCompressListener() {
                                                 @Override
                                                 public void onStart() {
@@ -198,7 +206,7 @@ public class NewDish extends Activity implements View.OnClickListener{
                                                 public void onError(Throwable e) {
                                                     Toast.makeText(mContext, "图片压缩出错", Toast.LENGTH_LONG).show();
                                                 }
-                                            }).launch();*/
+                                            }).launch();
                                     dishByAsyncHttpClientPost(dish);
                                     finish();
                                 }
@@ -208,6 +216,38 @@ public class NewDish extends Activity implements View.OnClickListener{
                 break;
             case R.id.neretbtn:
                 finish();
+                break;
+            case R.id.list_tag:
+                checkItems = new boolean[]{false, false, false, false};
+                alert = null;
+                builder = new AlertDialog.Builder(mContext);
+                alert = builder.setTitle("选择菜品标签")
+                        .setMultiChoiceItems(PreferenceUtil.tag, checkItems, new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                                checkItems[which] = isChecked;
+                            }
+                        })
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String result = "";
+                                int count = 0;
+                                for (int i = 0; i < checkItems.length; i++){
+                                    if (checkItems[i]) {
+                                        result += PreferenceUtil.tag[i] + " ";
+                                        count++;
+                                    }
+                                    if (count == 5) {
+                                        result += "......";
+                                        break;
+                                    }
+                                }
+                                tags.setText(result);
+                            }
+                        })
+                        .create();
+                alert.show();
                 break;
             case R.id.exlist_lol:
                 alert = null;
@@ -242,13 +282,13 @@ public class NewDish extends Activity implements View.OnClickListener{
         String url = "http://ch.huyunfan.cn/PHP/dish/addDish.php";
         RequestParams params = new RequestParams();
         try{
-            File photo = null;
+            /*File photo = null;
             if (dishPath != null)
-                photo = new File(dishPath);
-            if (photo != null)
-                params.put("photo", photo);
+                photo = new File(dishPath);*/
+            if (dishPic != null)
+                params.put("photo", dishPic);
             params.put("name", dish.getName());
-            params.put("canteenID", dish.getCanteenID());
+            params.put("canteenID", dish.getCanteenID() + 1);
             params.put("description", dish.getDescription());
             //params.put("category", dish.getCategory());
             params.put("publisherID", dish.getPublisherID());

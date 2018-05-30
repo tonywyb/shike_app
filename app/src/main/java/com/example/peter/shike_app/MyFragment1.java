@@ -46,70 +46,14 @@ public class MyFragment1 extends Fragment {
     private Event[] eventList = new Event[1000];
     private int count = 0;
     private static final int msgKey1 = 1;
-    private MyFragment1.TimeThread update_thread;
     private FrameLayout buttomfl;
     private Button tobuttom;
     private View nothing;
-    private boolean isRun = true;
 
 
 
-    public class TimeThread extends Thread {
-        private final Object lock = new Object();
-        private boolean pause = false;
-        void pauseThread(){
-            pause = true;
-        }
-        void resumeThread(){
-            pause = false;
-            synchronized (lock){
-                lock.notifyAll();
-            }
-        }
-        void onPause(){
-            synchronized (lock){
-                try{
-                    lock.wait();
-                }catch (InterruptedException e){
-                    e.printStackTrace();
-                }
-            }
-        }
-        @Override
-        public void run() {
-            do {
-                try {
-                    while (pause){
-                        onPause();
-                    }
-                    Thread.sleep(5000);
-                    if (pause){
-                        onPause();
-                    }
-                    Message msg = new Message();
-                    msg.what = msgKey1;
-                    mHandler.sendMessage(msg);
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            } while(isRun);
-        }
-    }
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage (Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case msgKey1:
-                    getEventByTypeAsyncHttpClientPost(PreferenceUtil.maptype);
-                    break;
 
-                default:
-                    break;
-            }
-        }
-    };
+
 
     //test pictures loading
     private ImageView testImage;
@@ -123,23 +67,16 @@ public class MyFragment1 extends Fragment {
 
     public void onStart(){
         super.onStart();
-        getEventByTypeAsyncHttpClientPost(PreferenceUtil.maptype);
-        update_thread = new MyFragment1.TimeThread();
-        update_thread.start();
     }
 
     public void onDestroy(){
         super.onDestroy();
-        isRun = false;
     }
     public void onResume(){
         super.onResume();
-        update_thread.resumeThread();
-        //设定地图显示范围
     }
     public void onPause(){
         super.onPause();
-        update_thread.pauseThread();
     }
     private void getEventByTypeAsyncHttpClientPost(int type) {
         //创建异步请求对象

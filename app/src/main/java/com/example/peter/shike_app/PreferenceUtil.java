@@ -30,11 +30,11 @@ public class PreferenceUtil {
     public static int userID;
     public static String username;
     public static final String SHOW_GUIDE = "showguide";
-    public static final String[] canteen = {"学一食堂", "学五食堂", "艺园食堂",
+    public static final String[] canteen = {"null", "学一食堂", "学五食堂", "艺园食堂",
             "艺园二楼", "农园一楼", "农园二楼", "农园三楼", "勺园一楼",
             "勺园二楼", "燕南食堂", "佟园食堂", "畅春园食堂", "医学部",
             "松林包子"};
-
+    public static final String[] tag = {"null", "tag1", "tag2", "tag3"};
     public static Event getEvent(int eventID) {
         for (int i = 0; i < datas.size(); i++) {
             if (datas.get(i).getEventId() == eventID) {

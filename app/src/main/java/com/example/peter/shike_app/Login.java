@@ -143,7 +143,7 @@ public class Login extends Activity implements View.OnClickListener {
                 }
                 break;
             case R.id.signupbtn:
-                startActivity(new Intent(Login.this, Message.class));
+                startActivity(new Intent(Login.this, dishActivity.class));
                 finish();
                 break;
             case R.id.signinlater:

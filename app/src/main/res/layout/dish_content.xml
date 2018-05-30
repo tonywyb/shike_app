@@ -51,7 +51,7 @@
     <RelativeLayout
         android:id="@+id/contentRelative3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="140dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/relativeLayout2"
@@ -71,15 +71,30 @@
                 android:layout_marginLeft="20dp"
                 android:text="菜品名称: "
                 android:textColor="#000000"
-                android:textSize="18dp" />
+                android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/event_title"
+                android:id="@+id/dish_name"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginRight="20dp"
                 android:textColor="#000000"
-                android:textSize="18dp" />
+                android:textSize="16sp" />
+            <TextView
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="食堂: "
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/dish_canteen"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
+                android:textColor="#000000"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -87,7 +102,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/contentLinear1"
-            android:layout_marginTop="11dp">
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -95,7 +110,7 @@
                 android:layout_marginLeft="20dp"
                 android:text="发布用户: "
                 android:textColor="#000000"
-                android:textSize="18dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/event_user"
@@ -103,7 +118,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="20dp"
                 android:textColor="#000000"
-                android:textSize="18dp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -111,7 +126,7 @@
             android:layout_width="260dp"
             android:layout_height="40dp"
             android:layout_below="@id/contentLinear2"
-            android:layout_marginTop="11dp">
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -120,7 +135,7 @@
                 android:layout_marginLeft="20dp"
                 android:text="评分: "
                 android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
             <RatingBar
                 android:id="@+id/scoreBar"
                 android:layout_width="wrap_content"
@@ -136,23 +151,11 @@
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:textSize="18dp"
+                android:textSize="16sp"
                 android:textColor="#000000"/>
 
         </LinearLayout>
 
-
-        <ImageView
-            android:id="@+id/testImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="11dp"
-            android:layout_marginRight="11dp"
-            android:src="@mipmap/addphoto2"
-            android:scaleType="centerInside"/>
 
     </RelativeLayout>
 
@@ -164,32 +167,6 @@
         android:layout_below="@+id/contentRelative3"
         android:layout_marginTop="10dp"
         android:id="@+id/view" />
-
-    <LinearLayout
-        android:id="@+id/contentLinear4"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@+id/view"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:text="菜品描述: "
-            android:textColor="#000000"
-            android:textSize="18dp" />
-
-        <TextView
-            android:id="@+id/event_content"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
-            android:textColor="#000000"
-            android:textSize="15dp" />
-
-    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/comment_fl"
@@ -276,5 +253,19 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="15dp"/>
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/testImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/contentRelative3"
+        android:layout_marginEnd="17dp"
+        android:layout_marginRight="17dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/grey_edge"
+        android:scaleType="centerInside"
+        android:src="@mipmap/addphoto2" />
 
 </RelativeLayout>

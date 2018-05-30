@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +39,7 @@ public class dishActivity extends AppCompatActivity {
     private AlertDialog.Builder builder = null;
     private Context mContext;
     private Button eventcontentret, deletebtn, reportbtn, comment_send, contactBtn;
-    private TextView dish_content, dish_name, eventcontenttitle, dish_publisher;
+    private TextView dish_content, dish_name, eventcontenttitle, dish_publisher, dish_canteen;
     private ImageButton newComment;
     private RelativeLayout rl_input;
     private TextView hide;
@@ -72,13 +74,15 @@ public class dishActivity extends AppCompatActivity {
         dishScore = (TextView)findViewById(R.id.dishscore);
         scoreBar = (RatingBar)findViewById(R.id.scoreBar);
         dishScore.setText(String.valueOf(scoreBar.getNumStars()));
+        dish_name = (TextView)findViewById(R.id.dish_name);
+        dish_canteen = (TextView)findViewById(R.id.dish_canteen) ;
 
-
-        Bundle bd = getIntent().getExtras();
+        /*Bundle bd = getIntent().getExtras();
         dishID = bd.getInt("dishID");
         which = bd.getInt("which");
         final Dish dish = PreferenceUtil.getDish(dishID);
         dish_name.setText(dish.getName());
+        dish_canteen.setText(PreferenceUtil.canteen[dish.getCanteenID()]);
         dish_content.setText(dish.getDescription());
         dish_publisher.setText("匿名天使");
         
@@ -88,7 +92,16 @@ public class dishActivity extends AppCompatActivity {
                     .load(dish.getPictureURL())
                     .fit()
                     .into(testImage);
-        }
+        }*/
+
+        /*FragmentManager fManager = getSupportFragmentManager();
+        ListFragment nlFragment = new ListFragment(4);
+        Bundle bd2 = new Bundle();
+        bd2.putInt("fatherID", dishID);
+        nlFragment.setArguments(bd2);
+        FragmentTransaction ft = fManager.beginTransaction();
+        ft.replace(R.id.comment_fl, nlFragment);
+        ft.commit();*/
 
         newComment.setVisibility(View.GONE);
         if (which != 1) {
