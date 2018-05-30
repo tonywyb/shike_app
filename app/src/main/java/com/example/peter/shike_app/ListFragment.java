@@ -43,6 +43,11 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         this.which = which;
     }
 
+    @SuppressLint("ValidFragment")
+    public ListFragment(int which) {
+        this.which = which;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.eventlist, container, false);
