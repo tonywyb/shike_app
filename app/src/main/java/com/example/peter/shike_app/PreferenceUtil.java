@@ -13,13 +13,13 @@ public class PreferenceUtil {
     public static MyAdapter myAdapter = null;
     public static MyAdapter myAdapter2 = null;
     public static MyAdapter myAdapterloc = null;
-    public static ReuseableAdapter tempDishAdapter = null;
+    public static ReuseableAdapter dishAdapter = null;
     public static MyAdapterforComment myAdapterforComment = null;
     public static ArrayList<Event> datas = new ArrayList<Event>();
     public static ArrayList<Event> mydatas = new ArrayList<Event>();
     public static ArrayList<Event> locdatas = new ArrayList<Event>();
 
-    public static ArrayList<String> tempDishDatas = new ArrayList<String>();
+    //public static ArrayList<String> tempDishDatas = new ArrayList<String>();
     public static ArrayList<Dish> dishDatas = new ArrayList<Dish>();
     public static ArrayList<Dish> myDishDatas = new ArrayList<Dish>();
     public static ArrayList<Dish> locDishdatas = new ArrayList<Dish>();
@@ -30,6 +30,7 @@ public class PreferenceUtil {
     public static int userID;
     public static String username;
     public static final String SHOW_GUIDE = "showguide";
+
     public static final String[] canteen = {"学一食堂", "学五食堂", "艺园食堂",
             "艺园二楼", "农园一楼", "农园二楼", "农园三楼", "勺园一楼",
             "勺园二楼", "燕南食堂", "佟园食堂", "畅春园食堂", "医学部",
