@@ -196,7 +196,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "PHP/dish/searchDish.php";
+        String url = "http://ch.huyunfan.cn/PHP/dish/searchDish.php";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
@@ -233,7 +233,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                                 JSONObject temp = dishList.getJSONObject(i);
                                 Dish dish = new Dish();
                                 dish.setID(temp.getInt("dishID"));
-                                dish.setCanteenID(temp.getInt("canteenID"));
+                                dish.setCanteenID(temp.getInt("canteenID") - 1);
                                 dish.setName(temp.getString("dishName"));
                                 PreferenceUtil.dishDatas.add(dish);
                             }

@@ -105,6 +105,7 @@ public class MyFragment2 extends Fragment {
         }
         FragmentTransaction ft = fManager.beginTransaction();
         ft.replace(R.id.fl_content, nlFragment);
+        ft.commit();
         return true;
     }
 }
