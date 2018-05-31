@@ -43,17 +43,11 @@ public class MyFragment1 extends Fragment {
     private Context mContext;
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
-    private Event[] eventList = new Event[1000];
     private int count = 0;
     private static final int msgKey1 = 1;
     private FrameLayout buttomfl;
     private Button tobuttom;
     private View nothing;
-
-
-
-
-
 
     //test pictures loading
     private ImageView testImage;
@@ -77,79 +71,5 @@ public class MyFragment1 extends Fragment {
     }
     public void onPause(){
         super.onPause();
-    }
-    private void getEventByTypeAsyncHttpClientPost(int type) {
-        //创建异步请求对象
-        AsyncHttpClient client = new AsyncHttpClient();
-        //输入要请求的url
-        String url = "http://120.25.232.47:8002/getEventByType/";
-        //String url = "http://www.baidu.com";
-        //请求的参数对象
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("type", type);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        //将参数加入到参数对象中
-        ByteArrayEntity entity = null;
-        try {
-            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
-            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        //进行post请求
-        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
-            //如果成功
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                try {
-                    int status = response.getInt("getStatus");
-                    if (status == 1) {
-                        Toast.makeText(mContext, "status code is:"+ statusCode+ "\n更新失败!\n", Toast.LENGTH_LONG).show();
-                    }
-                    else if(status == 0) {
-                        //Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
-                        int count = response.getInt("eventNum");
-                        if (count > 0) {
-                            JSONArray events = response.getJSONArray("events");
-                            //Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
-                            for (int i = 0; i < count; i++) {
-                                JSONObject temp = events.getJSONObject(i);
-                                eventList[i] = new Event();
-                                eventList[i].setEventID(temp.getInt("eventID"));
-                                //eventList[i].setBeginTime(temp.getString("beginTime"));
-                                eventList[i].setDescription(temp.getString("description"));
-                                //eventList[i].setEndTime(temp.getString("endTime"));
-                                eventList[i].setOutdate(temp.getInt("outdate"));
-                                eventList[i].setType(temp.getInt("type"));
-                                if (eventList[i].getType() == 2) {
-                                    eventList[i].setIshelped(temp.getInt("isHelped"));
-                                    eventList[i].setHelper(temp.getInt("helperID"));
-                                }
-                                eventList[i].setPublisherID(temp.getInt("publisherID"));
-                                eventList[i].setTitle(temp.getString("title"));
-                                eventList[i].setUsername(temp.getString("username"));
-                                Bundle bundle = new Bundle();
-                                bundle.putInt("index", i);
-                                //在地图上添加Marker，并显示
-                            }
-                        }
-                    }
-                }catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
-            }
-        });
-        return;
-
     }
 }

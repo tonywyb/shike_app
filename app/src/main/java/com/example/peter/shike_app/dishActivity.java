@@ -73,26 +73,31 @@ public class dishActivity extends AppCompatActivity {
         testImage = (ImageView)findViewById(R.id.testImage);
         dishScore = (TextView)findViewById(R.id.dishscore);
         scoreBar = (RatingBar)findViewById(R.id.scoreBar);
-        dishScore.setText(String.valueOf(scoreBar.getNumStars()));
+        dishScore.setText(String.valueOf(scoreBar.getRating()));
         dish_name = (TextView)findViewById(R.id.dish_name);
-        dish_canteen = (TextView)findViewById(R.id.dish_canteen) ;
+        dish_canteen = (TextView)findViewById(R.id.dish_canteen);
+        dish_publisher = (TextView)findViewById(R.id.dish_publisher);
 
-        /*Bundle bd = getIntent().getExtras();
+        Bundle bd = getIntent().getExtras();
         dishID = bd.getInt("dishID");
         which = bd.getInt("which");
         final Dish dish = PreferenceUtil.getDish(dishID);
         dish_name.setText(dish.getName());
+        String tmp = PreferenceUtil.canteen[dish.getCanteenID()];
         dish_canteen.setText(PreferenceUtil.canteen[dish.getCanteenID()]);
-        dish_content.setText(dish.getDescription());
         dish_publisher.setText("匿名天使");
-        
+
+        /*Picasso.with(mContext)
+                .load("http://i.imgur.com/DvpvklR.png")
+                .fit()
+                .into(testImage);*/
         //load the image
         if (dish.getPictureURL() != "") {
             Picasso.with(mContext)
-                    .load(dish.getPictureURL())
+                    .load("http://"+dish.getPictureURL())
                     .fit()
                     .into(testImage);
-        }*/
+        }
 
         /*FragmentManager fManager = getSupportFragmentManager();
         ListFragment nlFragment = new ListFragment(4);

@@ -241,6 +241,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                                 dish.setID(temp.getInt("dishID"));
                                 dish.setCanteenID(temp.getInt("canteenID") - 1);
                                 dish.setName(temp.getString("dishName"));
+                                dish.setPictureURL(temp.getString("photo"));
                                 PreferenceUtil.dishDatas.add(dish);
                             }
                             PreferenceUtil.myAdapter.notifyDataSetChanged();
