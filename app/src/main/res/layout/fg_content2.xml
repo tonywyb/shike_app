@@ -10,9 +10,9 @@
         android:layout_height="55dp"
         android:background="@color/zhihu_primary"
         android:gravity="center"
-        android:text="菜品"
+        android:text="学一食堂"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:layout_alignParentTop="true" />
 
     <Button
@@ -29,8 +29,8 @@
         android:id="@+id/can"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="食堂"
-        android:textSize="20sp"
+        android:text="切换食堂"
+        android:textSize="15sp"
         android:textColor="#FFFFFF"
         android:background="@color/zhihu_primary"
         android:layout_marginLeft="10dp"
