@@ -55,6 +55,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         list_event = (ListView) view.findViewById(R.id.list_event);
 
         if (which == 0) {
+            /*
             PreferenceUtil.dishAdapter = new ReuseableAdapter<Dish>(PreferenceUtil.dishDatas, R.layout.list_item) {
                 @Override
                 public void bindView(ViewHolder holder, Dish obj) {
@@ -67,23 +68,25 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
             getDishAsyncPHPClientPost();
             list_event.setOnItemClickListener(this);
             list_event.setOnItemLongClickListener(this);
-
-            /*
-            PreferenceUtil.myAdapter = new MyAdapter(PreferenceUtil.datas, getActivity());
+*/
+            PreferenceUtil.myAdapter = new MyAdapter(PreferenceUtil.dishDatas, getActivity());
             list_event.setAdapter(PreferenceUtil.myAdapter);
-            PreferenceUtil.datas.clear();
-            getEventAsyncHttpClientPost();
+            PreferenceUtil.dishDatas.clear();
+            getDishAsyncPHPClientPost();
             list_event.setOnItemClickListener(this);
             list_event.setOnItemLongClickListener(this);
-            */
+
         }
         else if (which == 1) {
+            /*
             PreferenceUtil.myAdapter2 = new MyAdapter(PreferenceUtil.mydatas, getActivity());
             list_event.setAdapter(PreferenceUtil.myAdapter2);
             list_event.setOnItemClickListener(this);
             list_event.setOnItemLongClickListener(this);
+            */
         }
         if (which == 3) {
+            /*
             Bundle bd = getArguments();
             PreferenceUtil.locdatas.clear();
             PreferenceUtil.myAdapterloc = new MyAdapter(PreferenceUtil.locdatas, getActivity());
@@ -91,6 +94,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
             getEventByLocationID(bd.getInt("locationID"), bd.getInt("type"));
             list_event.setOnItemClickListener(this);
             list_event.setOnItemLongClickListener(this);
+            */
         }
         if (which == 4) {
             PreferenceUtil.myAdapterforComment = new MyAdapterforComment(PreferenceUtil.commentdatas, getActivity());
@@ -237,7 +241,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                                 dish.setName(temp.getString("dishName"));
                                 PreferenceUtil.dishDatas.add(dish);
                             }
-                            PreferenceUtil.dishAdapter.notifyDataSetChanged();
+                            PreferenceUtil.myAdapter.notifyDataSetChanged();
                         }
                     }
 
