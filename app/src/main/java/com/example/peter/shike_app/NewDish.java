@@ -207,7 +207,6 @@ public class NewDish extends Activity implements View.OnClickListener{
                                                     Toast.makeText(mContext, "图片压缩出错", Toast.LENGTH_LONG).show();
                                                 }
                                             }).launch();
-                                    dishByAsyncHttpClientPost(dish);
                                     finish();
                                 }
                             }
