@@ -7,7 +7,7 @@
         <item android:id="@+id/yiyuan2" android:title="艺园二楼"/>
         <item android:id="@+id/nongyuan1" android:title="农园一楼"/>
         <item android:id="@+id/nongyuan2" android:title="农园二楼"/>
-        <item android:id="@+id/nongyuan3" android:title="艺园三楼"/>
+        <item android:id="@+id/nongyuan3" android:title="农园三楼"/>
         <item android:id="@+id/shaoyuan1" android:title="勺园一楼"/>
         <item android:id="@+id/shaoyuan2" android:title="勺园二楼"/>
         <item android:id="@+id/yannan" android:title="燕南食堂"/>
