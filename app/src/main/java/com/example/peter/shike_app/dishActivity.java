@@ -99,14 +99,14 @@ public class dishActivity extends AppCompatActivity {
                     .into(testImage);
         }
 
-        /*FragmentManager fManager = getSupportFragmentManager();
+        FragmentManager fManager = getSupportFragmentManager();
         ListFragment nlFragment = new ListFragment(4);
         Bundle bd2 = new Bundle();
         bd2.putInt("fatherID", dishID);
         nlFragment.setArguments(bd2);
         FragmentTransaction ft = fManager.beginTransaction();
         ft.replace(R.id.comment_fl, nlFragment);
-        ft.commit();*/
+        ft.commit();
 
         newComment.setVisibility(View.GONE);
         if (which != 1) {
@@ -211,17 +211,17 @@ public class dishActivity extends AppCompatActivity {
         return;
     }
 
-    public void postComment(final String comment, final int userID, final int eventID) {
+    public void postComment(final String comment, final int userID, final int dishID) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://120.25.232.47:8002/postComment/";
+        String url = "http://ch.huyunfan.cn/PHP/comment/addComment.php";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("content", comment);
-            jsonObject.put("publisherID", userID);
-            jsonObject.put("fatherID", eventID);
+            jsonObject.put("comment", comment);
+            jsonObject.put("userID", userID);
+            jsonObject.put("dishID", dishID);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -239,19 +239,33 @@ public class dishActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
-                Comment tmpcomment = new Comment();
                 try {
-                    tmpcomment.setCommentID(response.getInt("commentID"));
-                    tmpcomment.setFatherID(eventID);
-                    tmpcomment.setContent(comment);
-                    tmpcomment.setPublisherID(userID);
-                    tmpcomment.setUsername(PreferenceUtil.username);
+                    int status = response.getInt("Status");
+                    if (status == 0){
+                        Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
+                        /*Comment tmpcomment = new Comment();
+                        tmpcomment.setCommentID(response.getInt("commentID"));
+                        tmpcomment.setFatherID(dishID);
+                        tmpcomment.setContent(comment);
+                        tmpcomment.setPublisherID(userID);
+                        tmpcomment.setUsername(PreferenceUtil.username);
+                        PreferenceUtil.commentdatas.add(tmpcomment);
+                        PreferenceUtil.myAdapterforComment.notifyDataSetChanged();*/
+                        FragmentManager fManager = getSupportFragmentManager();
+                        ListFragment nlFragment = new ListFragment(4);
+                        Bundle bd2 = new Bundle();
+                        bd2.putInt("fatherID", dishID);
+                        nlFragment.setArguments(bd2);
+                        FragmentTransaction ft = fManager.beginTransaction();
+                        ft.replace(R.id.comment_fl, nlFragment);
+                        ft.commit();
+                    }
+                    else{
+                        Toast.makeText(mContext, "发布失败", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                PreferenceUtil.commentdatas.add(tmpcomment);
-                PreferenceUtil.myAdapterforComment.notifyDataSetChanged();
             }
 
             @Override

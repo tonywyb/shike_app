@@ -181,7 +181,7 @@ public class NewDish extends Activity implements View.OnClickListener{
                                     Toast.makeText(mContext, "请选择食堂", Toast.LENGTH_SHORT).show();
                                     alert.dismiss();
                                 }
-                                else if (dishPath == ""){
+                                else if (dishPath == null){
                                     Toast.makeText(mContext, "请选择图片", Toast.LENGTH_SHORT).show();
                                     alert.dismiss();
                                 }
