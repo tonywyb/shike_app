@@ -256,83 +256,12 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_SHORT).show();
             }
         });
         return;
     }
-/*
-    private void getEventAsyncHttpClientPost() {
-        //创建异步请求对象
-        AsyncHttpClient client = new AsyncHttpClient();
-        //输入要请求的url
-        String url = "http://120.25.232.47:8002/getAllEvents/";
-        //String url = "http://www.baidu.com";
-        //请求的参数对象
-        JSONObject jsonObject = new JSONObject();
-        //将参数加入到参数对象中
-        ByteArrayEntity entity = null;
-        try {
-            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
-            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        //进行post请求
-        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
-            //如果成功
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                try {
-                    int status = response.getInt("getStatus");
-                    if (status == 1) {
-                        Toast.makeText(mContext, "status code is:"+ statusCode+ "\n更新失败!\n", Toast.LENGTH_LONG).show();
-                    }
-                    else if(status == 0) {
-                        //Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
-                        int count = response.getInt("eventNum");
-                        if (count > 0) {
-                            JSONArray events = response.getJSONArray("events");
-                            //Toast.makeText(mContext, events.toString(), Toast.LENGTH_LONG).show();
-                            for (int i = 0; i < count; i++) {
-                                JSONObject temp = events.getJSONObject(i);
-                                Event event = new Event();
-                                event.setEventID(temp.getInt("eventID"));
-                                //eventList[i].setBeginTime(temp.getString("beginTime"));
-                                event.setDescription(temp.getString("description"));
-                                //eventList[i].setEndTime(temp.getString("endTime"));
-                                if (temp.getInt("locationID") == -1)
-                                event.setOutdate(temp.getInt("outdate"));
-                                event.setType(temp.getInt("type"));
-                                if (event.getType() == 2) {
-                                    event.setIshelped(temp.getInt("isHelped"));
-                                    event.setHelper(temp.getInt("helperID"));
-                                }
-                                event.setPublisherID(temp.getInt("publisherID"));
-                                event.setTitle(temp.getString("title"));
-                                event.setUsername(temp.getString("username"));
-                                PreferenceUtil.datas.add(event);
-                            }
-                            PreferenceUtil.myAdapter.notifyDataSetChanged();
-                        }
-                    }
-
-                }catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_LONG).show();
-            }
-        });
-        return;
-
-    }
-*/
+    
     private void getEventByLocationID(final int locationID, final int type) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();

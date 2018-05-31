@@ -60,37 +60,42 @@ public class Signup extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
         Intent it = getIntent();
-        phonenumber = it.getStringExtra("phonenumber");
+        phonenumber = "18811321234";
         bindViews();
     }
 
 
     private void signupByAsyncHttpClientPost(String... param) {
-        String studentID = param[0];
-        String userName = param[1];
-        String userPass = param[2];
-        String userPhoneNumber = param[3];
-        userPass = getMD5(userPass);
+        String userName = param[0];
+        String password = param[1];
+        String mobile = param[2];
+        password = getMD5(password);
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://120.25.232.47:8002/signup/";
+        String url = "http://ch.huyunfan.cn/PHP/user/signup.php";
         //String url = "http://www.baidu.com";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("userName",userName);
-            jsonObject.put("pwd",userPass);
-            jsonObject.put("contact", userPhoneNumber);
+            jsonObject.put("password",password);
+            jsonObject.put("mobile", mobile);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        byte[] jo = RSA.encrypt(jsonObject.toString().getBytes());
+        //byte[] jo = RSA.encrypt(jsonObject.toString().getBytes());
         //将参数加入到参数对象中
+        byte[] jo = jsonObject.toString().getBytes();
         ByteArrayEntity entity = null;
-//        try {
         entity = new ByteArrayEntity(jo);
         entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+//        try {
+        //RSA
+        /*
+        entity = new ByteArrayEntity(jo);
+        entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        */
 //        } catch (UnsupportedEncodingException e) {
 //            e.printStackTrace();
 //        }
@@ -109,23 +114,15 @@ public class Signup extends Activity{
                 try {
                     int status = response.getInt("signupStatus");
                     if(status == 0) {
-                        //PreferenceUtil.islogged = true;
-                        //PreferenceUtil.userID = response.getInt("userID");
                         Toast.makeText(mContext, "注册成功", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Signup.this, Login.class));
                         finish();
                     }
-                    if (status == 1) {
-                        Toast.makeText(mContext, "学号已存在",  Toast.LENGTH_LONG).show();
-                    }
-                    else if (status == 2){
+                    else if (status == 1){
                         Toast.makeText(mContext, "用户名已存在",  Toast.LENGTH_LONG).show();
                     }
-                    else if (status == 3){
+                    else if (status == 2){
                         Toast.makeText(mContext, "手机号已存在",  Toast.LENGTH_LONG).show();
-                    }
-                    else if (status == 4){
-                        Toast.makeText(mContext, "error! signupStatus is:" + status ,Toast.LENGTH_LONG).show();
                     }
                 }catch (JSONException e) {
                     e.printStackTrace();
@@ -183,9 +180,9 @@ public class Signup extends Activity{
                 else if(Username.length() > 10) {
                     Toast.makeText(mContext, "用户名不能超过10个字符", Toast.LENGTH_SHORT).show();
                 }
-                else if(UserPhoneNumber.length() == 0){
+                /*else if(UserPhoneNumber.length() == 0){
                     Toast.makeText(mContext, "手机号不能为空", Toast.LENGTH_SHORT).show();
-                }
+                }*/
                 else if(UserPass.length() == 0){
                     Toast.makeText(mContext, "  请输入密码", Toast.LENGTH_SHORT).show();
                 }

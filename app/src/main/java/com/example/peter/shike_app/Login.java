@@ -74,7 +74,7 @@ public class Login extends Activity implements View.OnClickListener {
         String url = "http://ch.huyunfan.cn/PHP/user/login/";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
-//        userPass = getMD5(userPass);
+        //userPass = getMD5(userPass);
 
         try {
             jsonObject.put("userName",userName);
@@ -143,7 +143,7 @@ public class Login extends Activity implements View.OnClickListener {
                 }
                 break;
             case R.id.signupbtn:
-                startActivity(new Intent(Login.this, dishActivity.class));
+                startActivity(new Intent(Login.this, Signup.class));
                 finish();
                 break;
             case R.id.signinlater:

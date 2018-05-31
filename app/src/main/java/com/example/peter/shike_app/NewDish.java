@@ -181,6 +181,10 @@ public class NewDish extends Activity implements View.OnClickListener{
                                     Toast.makeText(mContext, "请选择食堂", Toast.LENGTH_SHORT).show();
                                     alert.dismiss();
                                 }
+                                else if (dishPath == ""){
+                                    Toast.makeText(mContext, "请选择图片", Toast.LENGTH_SHORT).show();
+                                    alert.dismiss();
+                                }
                                 else {
                                     final Dish dish = new Dish();
                                     dish.setPublisherID(PreferenceUtil.userID);
@@ -190,24 +194,27 @@ public class NewDish extends Activity implements View.OnClickListener{
                                     dish.setDescription(content.getText().toString());
                                     dish.setCanteenID(PreferenceUtil.getPlace(loc.getText().toString()));
                                     //compress the picture with Luban
-                                    Luban.with(mContext)
-                                            .load(dishPath)
-                                            .setCompressListener(new OnCompressListener() {
-                                                @Override
-                                                public void onStart() {
-                                                }
-                                                @Override
-                                                public void onSuccess(File file) {
-                                                    dishPic = file;
-                                                    dishByAsyncHttpClientPost(dish);
-                                                    finish();
-                                                }
-                                                @Override
-                                                public void onError(Throwable e) {
-                                                    Toast.makeText(mContext, "图片压缩出错", Toast.LENGTH_LONG).show();
-                                                }
-                                            }).launch();
-                                    finish();
+                                    if (dishPath != "") {
+                                        Luban.with(mContext)
+                                                .load(dishPath)
+                                                .setCompressListener(new OnCompressListener() {
+                                                    @Override
+                                                    public void onStart() {
+                                                    }
+
+                                                    @Override
+                                                    public void onSuccess(File file) {
+                                                        dishPic = file;
+                                                        dishByAsyncHttpClientPost(dish);
+                                                        finish();
+                                                    }
+
+                                                    @Override
+                                                    public void onError(Throwable e) {
+                                                        Toast.makeText(mContext, "图片压缩出错", Toast.LENGTH_LONG).show();
+                                                    }
+                                                }).launch();
+                                    }
                                 }
                             }
                         }).create();             //创建AlertDialog对象
