@@ -10,7 +10,7 @@
         android:layout_height="55dp"
         android:background="@color/zhihu_primary"
         android:gravity="center"
-        android:text="菜 品"
+        android:text="学一食堂"
         android:textColor="#FFFFFF"
         android:textSize="25sp"
         android:layout_alignParentTop="true" />
