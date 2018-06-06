@@ -51,13 +51,13 @@ public class ChangePwd extends Activity {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://120.25.232.47:8002/changePwd/";
+        String url = "http://ch.huyunfan.cn/PHP/user/changePassword..php";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
-        oldPass = getMD5(oldPass);
-        newPass = getMD5(newPass);
+//        oldPass = getMD5(oldPass);
+//        newPass = getMD5(newPass);
         try {
-            jsonObject.put("userID",userID);
+//            jsonObject.put("userID",userID);
             jsonObject.put("oldPwd",oldPass);
             jsonObject.put("newPwd",newPass);
         } catch (JSONException e) {

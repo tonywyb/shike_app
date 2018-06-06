@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mob.MobSDK;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener{
 
     private TextView txt_chat;
@@ -27,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int PAGE_ONE = 0;
     public static final int PAGE_TWO = 1;
     public static final int PAGE_THREE = 2;
-
     private long exitTime = 0;
     public void onBackPressed(){
         if (System.currentTimeMillis() - exitTime > 2000) {
