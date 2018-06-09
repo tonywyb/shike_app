@@ -49,6 +49,10 @@ public class dishActivity extends AppCompatActivity {
     private ImageView testImage;
     private TextView dishScore;
     private RatingBar scoreBar;
+    private Button scoreButton;
+
+    private int userScore;
+    private double score;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +81,7 @@ public class dishActivity extends AppCompatActivity {
         dish_name = (TextView)findViewById(R.id.dish_name);
         dish_canteen = (TextView)findViewById(R.id.dish_canteen);
         dish_publisher = (TextView)findViewById(R.id.dish_publisher);
+        scoreButton = (Button)findViewById(R.id.dish_score);
 
         Bundle bd = getIntent().getExtras();
         dishID = bd.getInt("dishID");
@@ -86,6 +91,12 @@ public class dishActivity extends AppCompatActivity {
         String tmp = PreferenceUtil.canteen[dish.getCanteenID()];
         dish_canteen.setText(PreferenceUtil.canteen[dish.getCanteenID()]);
         dish_publisher.setText("匿名天使");
+
+        score = dish.getRating();
+        if (score == -1)
+            scoreBar.setRating(0);
+        else
+            scoreBar.setRating((float)score);
 
         /*Picasso.with(mContext)
                 .load("http://i.imgur.com/DvpvklR.png")
@@ -98,6 +109,32 @@ public class dishActivity extends AppCompatActivity {
                     .fit()
                     .into(testImage);
         }
+        //点击评分按钮弹出对话框
+        scoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String[] scores = {"1分", "2分", "3分", "4分", "5分"};
+                alert = null;
+                builder = new AlertDialog.Builder(mContext);
+                alert = builder.setTitle("请选择对菜品评分")
+                        .setSingleChoiceItems(scores, 0, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                userScore = which;
+                            }
+                        })
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                /*String score = String.valueOf(userScore + 1);
+                                Toast.makeText(mContext, score, Toast.LENGTH_SHORT).show();*/
+                                int score = userScore + 1;
+
+                            }
+                        }).create();
+                alert.show();
+            }
+        });
 
         FragmentManager fManager = getSupportFragmentManager();
         ListFragment nlFragment = new ListFragment(4);
@@ -169,6 +206,7 @@ public class dishActivity extends AppCompatActivity {
                     }
                 }
             });
+
         }
     }
     private void reportEventAsyncHttpClientPost(final int eventID, final Event event) {
@@ -243,14 +281,14 @@ public class dishActivity extends AppCompatActivity {
                     int status = response.getInt("Status");
                     if (status == 0){
                         Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
-                        /*Comment tmpcomment = new Comment();
+                        Comment tmpcomment = new Comment();
                         tmpcomment.setCommentID(response.getInt("commentID"));
                         tmpcomment.setFatherID(dishID);
                         tmpcomment.setContent(comment);
                         tmpcomment.setPublisherID(userID);
                         tmpcomment.setUsername(PreferenceUtil.username);
                         PreferenceUtil.commentdatas.add(tmpcomment);
-                        PreferenceUtil.myAdapterforComment.notifyDataSetChanged();*/
+                        PreferenceUtil.myAdapterforComment.notifyDataSetChanged();
                         FragmentManager fManager = getSupportFragmentManager();
                         ListFragment nlFragment = new ListFragment(4);
                         Bundle bd2 = new Bundle();
@@ -259,6 +297,58 @@ public class dishActivity extends AppCompatActivity {
                         FragmentTransaction ft = fManager.beginTransaction();
                         ft.replace(R.id.comment_fl, nlFragment);
                         ft.commit();
+                    }
+                    else{
+                        Toast.makeText(mContext, "发布失败", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                //Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "发布失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return;
+    }
+    public void postRating(final int rating, final int userID, final int dishID) {
+        //创建异步请求对象
+        AsyncHttpClient client = new AsyncHttpClient();
+        //输入要请求的url
+        String url = "http://ch.huyunfan.cn/PHP/comment/rate.php";
+        //请求的参数对象
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("userID", userID);
+            jsonObject.put("dishID", dishID);
+            jsonObject.put("rating", rating);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //将参数加入到参数对象中
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //进行post请求
+        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
+            //如果成功
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    int status = response.getInt("Status");
+                    if (status == 0){
+                        Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
+                        score = response.getDouble("rating");
+                        scoreBar.setRating((float)score);
                     }
                     else{
                         Toast.makeText(mContext, "发布失败", Toast.LENGTH_SHORT).show();

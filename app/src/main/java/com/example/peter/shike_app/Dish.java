@@ -13,6 +13,7 @@ public class Dish {
     private int category;
     private int publisherID;
     private String publisherName;
+    private double rating;
 
     public void setID(int ID) {
         this.ID = ID;
@@ -91,4 +92,8 @@ public class Dish {
     public String getPublisherName() {
         return publisherName;
     }
+
+    public void setRating(double rating){this.rating = rating;}
+
+    public double getRating() {return rating;}
 }
