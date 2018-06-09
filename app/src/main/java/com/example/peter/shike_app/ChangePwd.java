@@ -51,15 +51,14 @@ public class ChangePwd extends Activity {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://120.25.232.47:8002/changePwd/";
+        String url = "http://ch.huyunfan.cn/PHP/user/changePassword.php";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         oldPass = getMD5(oldPass);
         newPass = getMD5(newPass);
         try {
-            jsonObject.put("userID",userID);
-            jsonObject.put("oldPwd",oldPass);
             jsonObject.put("newPwd",newPass);
+            jsonObject.put("oldPwd",oldPass);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -80,7 +79,8 @@ public class ChangePwd extends Activity {
                 try {
                     int status = response.getInt("changePwdStatus");
                     if (status == 1) {
-                        Toast.makeText(mContext, "原密码输入错误",  Toast.LENGTH_LONG).show();
+                        String errMsg = response.getString("errMsg");
+                        Toast.makeText(mContext, "密码更改失败, " + errMsg,  Toast.LENGTH_LONG).show();
                     }
                     else if(status == 0) {
                         Toast.makeText(ChangePwd.this, "密码更改成功", Toast.LENGTH_SHORT).show();
