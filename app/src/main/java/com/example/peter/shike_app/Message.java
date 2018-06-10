@@ -41,8 +41,8 @@ public class Message extends Activity {
     private Context mContext;
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
+    private String userName;
     private String codestr;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +79,10 @@ public class Message extends Activity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                submitCode("86", phone.getText().toString(), code.getText().toString());
+                Bundle bd = getIntent().getExtras();
+                userName = bd.getString("userName");
+                messageAsyncHttpClientPost(phone.getText().toString(), userName, code.getText().toString());
+//                submitCode("86", phone.getText().toString(), code.getText().toString());
 //
 //                if (code.getText().toString().equals(codestr)) {
 //                    Intent it = new Intent(Message.this, Signup.class);
@@ -95,7 +98,7 @@ public class Message extends Activity {
         getcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                messageAsyncHttpClientPost(phone.getText().toString());
+                //messageAsyncHttpClientPost(phone.getText().toString());
                 sendCode("86", phone.getText().toString());
                 time.start();
             }
@@ -121,16 +124,19 @@ public class Message extends Activity {
 
         }
     }
-/*
-    public void messageAsyncHttpClientPost(String phonenumber) {
+
+    public void messageAsyncHttpClientPost(String phonenumber, String userName, String code) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://120.25.232.47:8002/getPhoneVariCode/";
+        String url = "http://ch.huyunfan.cn/PHP/user/getPhoneVariCode.php";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("mobile", phonenumber);
+            jsonObject.put("userName", userName);
+            jsonObject.put("code", code);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -151,11 +157,12 @@ public class Message extends Activity {
                 try {
                     int status = response.getInt("getStatus");
                     if (status == 1) {
-                        Toast.makeText(mContext, "该手机号已经注册", Toast.LENGTH_SHORT).show();
+                        String errMsg = response.getString("errMsg");
+                        Toast.makeText(mContext, "注册失败, " + errMsg, Toast.LENGTH_SHORT).show();
                     }
                     else if(status == 0) {
                         codestr = response.getString("obj");
-                        Toast.makeText(mContext, "短信已发送，请注意查收", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "注册成功！", Toast.LENGTH_SHORT).show();
                     }
                 }catch (JSONException e) {
                     e.printStackTrace();
@@ -171,7 +178,7 @@ public class Message extends Activity {
         return;
 
     }
-    */
+
 
     // 请求验证码，其中country表示国家代码，如“86”；phone表示手机号码，如“13800138000”
     public void sendCode(String country, String phone) {
@@ -180,15 +187,15 @@ public class Message extends Activity {
             public void afterEvent(int event, int result, Object data) {
                 if (result == SMSSDK.RESULT_COMPLETE) {
                     // TODO 处理成功得到验证码的结果
-                    Looper.prepare();
+//                    Looper.prepare();
                     Toast.makeText(mContext, "已发送验证码，请耐心等候", Toast.LENGTH_LONG).show();
-                    Looper.loop();
+//                    Looper.loop();
                     // 请注意，此时只是完成了发送验证码的请求，验证码短信还需要几秒钟之后才送达
                 } else{
                     // TODO 处理错误的结果
-                    Looper.prepare();
+//                    Looper.prepare();
                     Toast.makeText(mContext, "发送验证码失败，请输入正确验证码", Toast.LENGTH_LONG).show();
-                    Looper.loop();
+//                    Looper.loop();
                 }
             }
         });
@@ -203,18 +210,18 @@ public class Message extends Activity {
             public void afterEvent(int event, int result, Object data) {
                 if (result == SMSSDK.RESULT_COMPLETE) {
                     // TODO 处理验证成功的结果
-                    Looper.prepare();
+//                    Looper.prepare();
                     Toast.makeText(mContext, "验证成功", Toast.LENGTH_LONG).show();
-                    Looper.loop();
+//                    Looper.loop();
                     Intent it = new Intent(Message.this, Signup.class);
                     it.putExtra("phonenumber", phone);
                     startActivity(it);
                     finish();
                 } else{
                     // TODO 处理错误的结果
-                    Looper.prepare();
+//                    Looper.prepare();
                     Toast.makeText(mContext, "未进行验证或验证码不正确", Toast.LENGTH_LONG).show();
-                    Looper.loop();
+//                    Looper.loop();
                 }
 
             }
