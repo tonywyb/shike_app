@@ -80,7 +80,6 @@ public class Signup extends Activity{
         try {
             jsonObject.put("userName",userName);
             jsonObject.put("password",password);
-            jsonObject.put("mobile", mobile);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -119,11 +118,13 @@ public class Signup extends Activity{
                         finish();
                     }
                     else if (status == 1){
-                        Toast.makeText(mContext, "用户名已存在",  Toast.LENGTH_LONG).show();
+                        String s = response.getString("errMsg");
+                        Toast.makeText(mContext, s,  Toast.LENGTH_LONG).show();
                     }
-                    else if (status == 2){
-                        Toast.makeText(mContext, "手机号已存在",  Toast.LENGTH_LONG).show();
-                    }
+//                    else if (status == 2){
+//                        String s = response.getString("errMsg");
+//                        Toast.makeText(mContext, "手机号已存在, " + s,  Toast.LENGTH_LONG).show();
+//                    }
                 }catch (JSONException e) {
                     e.printStackTrace();
                 }
