@@ -160,7 +160,10 @@ public class Signup extends Activity{
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                startActivity(new Intent(Signup.this, Message.class));
+                                Intent it = new Intent(Signup.this, Message.class);
+                                it.putExtra("userName", suusername.getText().toString());
+                                startActivity(it);
+                                //startActivity(new Intent(Signup.this, Message.class));
                                 finish();
                             }
                         }).create();             //创建AlertDialog对象
