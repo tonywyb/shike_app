@@ -3,6 +3,7 @@ package com.example.peter.shike_app;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,11 +14,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -45,6 +48,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.String;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import top.zibin.luban.Luban;
@@ -73,6 +77,7 @@ public class NewDish extends Activity implements View.OnClickListener{
     private File dishPic = null;
     private static final int REQUEST_CODE_CHOOSE = 23;//定义请求码常量
     private static final int REQUESTCODE = 0;//定义请求码常量
+    private ExpandableListView tag_list;
 
     private int dishID;
 
@@ -87,6 +92,25 @@ public class NewDish extends Activity implements View.OnClickListener{
             hasbd = true;
         }
         bindViews();
+
+        PreferenceUtil.gData.clear();
+        PreferenceUtil.iData.clear();
+        PreferenceUtil.lData.clear();
+
+        int group_before = 0;
+        for(int i = 0; i < PreferenceUtil.tagType.length; i ++) {
+            PreferenceUtil.gData.add(PreferenceUtil.tagType[i]);
+        }
+        for(int i = 0; i < PreferenceUtil.tag.length; i ++) {
+            Tag tag = new Tag(i);
+            if(group_before != tag.getType()) {
+                PreferenceUtil.iData.add(PreferenceUtil.lData);
+                PreferenceUtil.lData = new ArrayList<Tag>();
+            }
+            group_before = tag.getType();
+            PreferenceUtil.lData.add(tag);
+        }
+        PreferenceUtil.iData.add(PreferenceUtil.lData);
 
         mContext = NewDish.this;
         exlist_lol.setOnClickListener(this);
@@ -226,9 +250,30 @@ public class NewDish extends Activity implements View.OnClickListener{
                 finish();
                 break;
             case R.id.list_tag:
-                checkItems = new boolean[]{false, false, false, false};
+                //checkItems = new boolean[]{false, false, false, false};
+
+                PreferenceUtil.tagAdapter = new MyBaseExpandableListAdapter(PreferenceUtil.gData, PreferenceUtil.iData, mContext);
+
                 alert = null;
                 builder = new AlertDialog.Builder(mContext);
+                final LayoutInflater inflater = this.getLayoutInflater();
+                View view_custom = inflater.inflate(R.layout.tag_selete, null, false);
+
+                tag_list = view_custom.findViewById(R.id.tag_list);
+                tag_list.setAdapter(PreferenceUtil.tagAdapter);
+
+                tag_list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                    @Override
+                    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                        Toast.makeText(mContext, "你点击了：" + PreferenceUtil.iData.get(groupPosition).get(childPosition).getName(), Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
+
+                builder.setView(view_custom);
+                builder.setCancelable(true);
+                alert = builder.create();
+                /*
                 alert = builder.setTitle("选择菜品标签")
                         .setMultiChoiceItems(PreferenceUtil.tag, checkItems, new DialogInterface.OnMultiChoiceClickListener() {
                             @Override
@@ -255,6 +300,7 @@ public class NewDish extends Activity implements View.OnClickListener{
                             }
                         })
                         .create();
+                */
                 alert.show();
                 break;
             case R.id.exlist_lol:

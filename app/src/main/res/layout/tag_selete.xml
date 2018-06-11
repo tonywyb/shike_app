@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/tag_title"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="选择菜品标签"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
+    <ExpandableListView
+        android:id="@+id/tag_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tag_title"
+        android:childDivider="#55e5e7"/>
+
+    <Button
+        android:id="@+id/tag_choose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical"
+        android:text="  确 定"
+        android:textSize="20sp"
+        />
+
+</RelativeLayout>
