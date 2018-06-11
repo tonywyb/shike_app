@@ -88,15 +88,19 @@ public class dishActivity extends AppCompatActivity {
         which = bd.getInt("which");
         final Dish dish = PreferenceUtil.getDish(dishID);
         dish_name.setText(dish.getName());
-        String tmp = PreferenceUtil.canteen[dish.getCanteenID()];
-        dish_canteen.setText(PreferenceUtil.canteen[dish.getCanteenID()]);
+        dish_canteen.setText(PreferenceUtil.getCanteen(dish.getCanteenID()));
         dish_publisher.setText("匿名天使");
 
         score = dish.getRating();
-        if (score == -1)
+        if (score == -1){
             scoreBar.setRating(0);
-        else
+            dishScore.setText("0.0");
+        }
+        else{
             scoreBar.setRating((float)score);
+            dishScore.setText(String.valueOf(score));
+        }
+
 
         /*Picasso.with(mContext)
                 .load("http://i.imgur.com/DvpvklR.png")
@@ -113,6 +117,10 @@ public class dishActivity extends AppCompatActivity {
         scoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!PreferenceUtil.islogged) {
+                    Toast.makeText(mContext, "请先登录", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 final String[] scores = {"1分", "2分", "3分", "4分", "5分"};
                 alert = null;
                 builder = new AlertDialog.Builder(mContext);
@@ -129,6 +137,7 @@ public class dishActivity extends AppCompatActivity {
                                 /*String score = String.valueOf(userScore + 1);
                                 Toast.makeText(mContext, score, Toast.LENGTH_SHORT).show();*/
                                 int score = userScore + 1;
+                                postRating(score, PreferenceUtil.userID, dishID);
 
                             }
                         }).create();
@@ -319,7 +328,7 @@ public class dishActivity extends AppCompatActivity {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://ch.huyunfan.cn/PHP/comment/rate.php";
+        String url = "http://ch.huyunfan.cn/PHP/rating/rate.php";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {

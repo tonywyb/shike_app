@@ -74,6 +74,8 @@ public class NewDish extends Activity implements View.OnClickListener{
     private static final int REQUEST_CODE_CHOOSE = 23;//定义请求码常量
     private static final int REQUESTCODE = 0;//定义请求码常量
 
+    private int dishID;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -286,29 +288,40 @@ public class NewDish extends Activity implements View.OnClickListener{
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
         String url = "http://ch.huyunfan.cn/PHP/dish/addDish.php";
-        RequestParams params = new RequestParams();
+        JSONObject jsonObject = new JSONObject();
+        //RequestParams params = new RequestParams();
         try{
-            /*File photo = null;
-            if (dishPath != null)
-                photo = new File(dishPath);*/
-            if (dishPic != null)
+            /*if (dishPic != null)
                 params.put("photo", dishPic);
             params.put("name", dish.getName());
             params.put("canteenID", dish.getCanteenID() + 1);
             params.put("description", dish.getDescription());
-            //params.put("category", dish.getCategory());
-            params.put("publisherID", dish.getPublisherID());
+            params.put("publisherID", dish.getPublisherID());*/
+            jsonObject.put("name", dish.getName());
+            jsonObject.put("canteenID", dish.getCanteenID());
+            jsonObject.put("description", dish.getDescription());
+            jsonObject.put("publisherID", dish.getPublisherID());
         }catch (Exception e){
             e.printStackTrace();
         }
-        client.post(url, params, new JsonHttpResponseHandler(){
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 try {
                     int result = (response.getInt("addDishStatus"));
-                    if (result == 0)
+                    if (result == 0){
                         Toast.makeText(mContext, "发布成功", Toast.LENGTH_LONG).show();
+                        dishID = response.getInt("dishID");
+                        dishPicByAsyncHttpClientPost();
+                    }
                     else
                         Toast.makeText(mContext, "发布失败", Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
@@ -319,6 +332,44 @@ public class NewDish extends Activity implements View.OnClickListener{
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 Toast.makeText(mContext, "发布失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return;
+    }
+    public void dishPicByAsyncHttpClientPost() {
+        //创建异步请求对象
+        AsyncHttpClient client = new AsyncHttpClient();
+        //输入要请求的url
+        String url = "http://ch.huyunfan.cn/PHP/dish/addDishPic.php";
+        RequestParams params = new RequestParams();
+        try{
+            /*File photo = null;
+            if (dishPath != null)
+                photo = new File(dishPath);*/
+            if (dishPic != null)
+                params.put("photo", dishPic);
+            params.put("dishID", dishID);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        client.post(url, params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    int result = (response.getInt("Status"));
+                    if (result == 0)
+                        Toast.makeText(mContext, "上传图片成功", Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(mContext, "上传图片失败", Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(mContext, "上传图片失败", Toast.LENGTH_SHORT).show();
             }
         });
         return;
