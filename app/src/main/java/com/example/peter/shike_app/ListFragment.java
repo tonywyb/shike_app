@@ -206,7 +206,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("canteenID", this.myCanteen + 1);
+            jsonObject.put("canteenID", this.myCanteen);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -239,9 +239,11 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                                 JSONObject temp = dishList.getJSONObject(i);
                                 Dish dish = new Dish();
                                 dish.setID(temp.getInt("dishID"));
-                                dish.setCanteenID(temp.getInt("canteenID") - 1);
+                                dish.setCanteenID(temp.getInt("canteenID"));
                                 dish.setName(temp.getString("dishName"));
                                 dish.setPictureURL(temp.getString("photo"));
+                                dish.setRating(temp.getDouble("rating"));
+                                dish.setPublisherName(temp.getString("userName"));
                                 PreferenceUtil.dishDatas.add(dish);
                             }
                             PreferenceUtil.myAdapter.notifyDataSetChanged();

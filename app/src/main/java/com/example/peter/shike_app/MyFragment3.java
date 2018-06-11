@@ -98,8 +98,8 @@ public class MyFragment3 extends Fragment implements View.OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
-        if (PreferenceUtil.islogged)
-            getEventByIDAsyncHttpClientPost(PreferenceUtil.userID);
+        /*if (PreferenceUtil.islogged)
+            getEventByIDAsyncHttpClientPost(PreferenceUtil.userID);*/
     }
 
     @Override
