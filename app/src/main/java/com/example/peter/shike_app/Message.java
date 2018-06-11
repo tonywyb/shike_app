@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.LogHandler;
 import com.mob.MobSDK;
 
 import org.apache.http.Header;
@@ -213,7 +214,7 @@ public class Message extends Activity {
 //                    Looper.prepare();
                     Toast.makeText(mContext, "验证成功", Toast.LENGTH_LONG).show();
 //                    Looper.loop();
-                    Intent it = new Intent(Message.this, Signup.class);
+                    Intent it = new Intent(Message.this, Login.class);
                     it.putExtra("phonenumber", phone);
                     startActivity(it);
                     finish();

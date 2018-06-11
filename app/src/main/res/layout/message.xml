@@ -87,7 +87,7 @@
             android:layout_marginTop="100dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="下 一 步"
+            android:text="注册"
             android:gravity="center"
             android:textSize="18sp"
             android:textColor="#FFFFFF"/>
