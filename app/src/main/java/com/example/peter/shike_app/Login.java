@@ -30,6 +30,7 @@ public class Login extends Activity implements View.OnClickListener {
     private EditText username = null;
     private EditText passwd = null;
     Context mContext = this;
+
     public static String getMD5(String str) {
         try {
             // 生成一个MD5加密计算摘要
