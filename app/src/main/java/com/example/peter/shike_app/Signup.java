@@ -80,7 +80,6 @@ public class Signup extends Activity{
         try {
             jsonObject.put("userName",userName);
             jsonObject.put("password",password);
-            jsonObject.put("mobile", mobile);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -114,16 +113,20 @@ public class Signup extends Activity{
                 try {
                     int status = response.getInt("signupStatus");
                     if(status == 0) {
-                        Toast.makeText(mContext, "注册成功", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Signup.this, Login.class));
+                        Toast.makeText(mContext, "进入手机验证", Toast.LENGTH_SHORT).show();
+                        Intent it = new Intent(Signup.this, Message.class);
+//                        it.putExtra("userName", suusername.getText().toString());
+                        startActivity(it);
                         finish();
                     }
                     else if (status == 1){
-                        Toast.makeText(mContext, "用户名已存在",  Toast.LENGTH_LONG).show();
+                        String s = response.getString("errMsg");
+                        Toast.makeText(mContext, s,  Toast.LENGTH_LONG).show();
                     }
-                    else if (status == 2){
-                        Toast.makeText(mContext, "手机号已存在",  Toast.LENGTH_LONG).show();
-                    }
+//                    else if (status == 2){
+//                        String s = response.getString("errMsg");
+//                        Toast.makeText(mContext, "手机号已存在, " + s,  Toast.LENGTH_LONG).show();
+//                    }
                 }catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -160,8 +163,7 @@ public class Signup extends Activity{
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent it = new Intent(Signup.this, Message.class);
-                                it.putExtra("userName", suusername.getText().toString());
+                                Intent it = new Intent(Signup.this, Login.class);
                                 startActivity(it);
                                 //startActivity(new Intent(Signup.this, Message.class));
                                 finish();

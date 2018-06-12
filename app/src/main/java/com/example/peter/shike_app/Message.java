@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.LogHandler;
 import com.mob.MobSDK;
 
 import org.apache.http.Header;
@@ -41,7 +42,7 @@ public class Message extends Activity {
     private Context mContext;
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
-    private String userName;
+//    private String userName;
     private String codestr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +80,9 @@ public class Message extends Activity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bd = getIntent().getExtras();
-                userName = bd.getString("userName");
-                messageAsyncHttpClientPost(phone.getText().toString(), userName, code.getText().toString());
+//                Bundle bd = getIntent().getExtras();
+//                userName = bd.getString("userName");
+                messageAsyncHttpClientPost(phone.getText().toString(), code.getText().toString());
 //                submitCode("86", phone.getText().toString(), code.getText().toString());
 //
 //                if (code.getText().toString().equals(codestr)) {
@@ -125,16 +126,16 @@ public class Message extends Activity {
         }
     }
 
-    public void messageAsyncHttpClientPost(String phonenumber, String userName, String code) {
+    public void messageAsyncHttpClientPost(String phonenumber, String code) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://ch.huyunfan.cn/PHP/user/getPhoneVariCode.php";
+        String url = "http://ch.huyunfan.cn/PHP/user/phoneVerify.php";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("mobile", phonenumber);
-            jsonObject.put("userName", userName);
+//            jsonObject.put("userName", userName);
             jsonObject.put("code", code);
 
         } catch (JSONException e) {
@@ -163,6 +164,8 @@ public class Message extends Activity {
                     else if(status == 0) {
                         codestr = response.getString("obj");
                         Toast.makeText(mContext, "注册成功！", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(Message.this, Login.class));
+                        finish();
                     }
                 }catch (JSONException e) {
                     e.printStackTrace();
@@ -213,10 +216,10 @@ public class Message extends Activity {
 //                    Looper.prepare();
                     Toast.makeText(mContext, "验证成功", Toast.LENGTH_LONG).show();
 //                    Looper.loop();
-                    Intent it = new Intent(Message.this, Signup.class);
-                    it.putExtra("phonenumber", phone);
-                    startActivity(it);
-                    finish();
+//                    Intent it = new Intent(Message.this, Login.class);
+//                    it.putExtra("phonenumber", phone);
+//                    startActivity(it);
+//                    finish();
                 } else{
                     // TODO 处理错误的结果
 //                    Looper.prepare();
