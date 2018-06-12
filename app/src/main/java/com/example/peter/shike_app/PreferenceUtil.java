@@ -32,6 +32,7 @@ public class PreferenceUtil {
     public static boolean islogged = false;
     public static int userID;
     public static String username;
+    public static String token;
     public static final String SHOW_GUIDE = "showguide";
 
     public static final String[] canteen = {"学一食堂", "学五食堂", "艺园食堂",

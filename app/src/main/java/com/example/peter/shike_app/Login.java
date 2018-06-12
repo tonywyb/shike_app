@@ -109,6 +109,7 @@ public class Login extends Activity implements View.OnClickListener {
                         PreferenceUtil.islogged = true;
                         PreferenceUtil.userID = response.getInt("userID");
                         PreferenceUtil.username = username;
+                        PreferenceUtil.token = response.getString("token");
                         Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Login.this, MainActivity.class));
                         finish();
