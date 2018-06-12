@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_centerVertical="true"
-        android:focusable="false"
+        android:clickable="false"
         android:text="清淡"
         android:textSize="18sp" />
 

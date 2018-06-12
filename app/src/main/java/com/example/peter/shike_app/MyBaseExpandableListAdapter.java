@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -83,6 +84,7 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
                     R.layout.tag_item_child, parent, false);
             itemHolder = new ViewHolderItem();
             itemHolder.tag_name = (TextView) convertView.findViewById(R.id.tag_name);
+            itemHolder.isCheck = ((CheckBox) convertView.findViewById(R.id.tag_check)).isChecked();
             convertView.setTag(itemHolder);
         }else{
             itemHolder = (ViewHolderItem) convertView.getTag();
@@ -104,6 +106,7 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
 
     private static class ViewHolderItem{
         private TextView tag_name;
+        private boolean isCheck;
     }
 
 }

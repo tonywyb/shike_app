@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -45,25 +46,37 @@ public class MyAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.dish_name = (TextView) convertView.findViewById(R.id.dish_name);
             viewHolder.dish_picture = (ImageView) convertView.findViewById(R.id.dish_picture);
-            viewHolder.dish_description = (TextView) convertView.findViewById(R.id.dish_description);
+            viewHolder.dish_rate = (RatingBar) convertView.findViewById(R.id.dish_rate);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        // 填写dish名字
         viewHolder.dish_name.setText(mDish.get(position).getName());
+
+        // 填写dish图片
         if (mDish.get(position).getPictureURL() != "") {
             Picasso.with(mContext)
                     .load("http://"+mDish.get(position).getPictureURL())
                     .fit()
                     .into(viewHolder.dish_picture);
         }
-        viewHolder.dish_description.setText("23333!");
+
+        // 填写dish评分
+        double score = mDish.get(position).getRating();
+        if (score == -1){
+            viewHolder.dish_rate.setRating(0);
+        }
+        else{
+            viewHolder.dish_rate.setRating((float)score);
+        }
         return convertView;
     }
 
     private class ViewHolder {
         ImageView dish_picture;
         TextView dish_name;
-        TextView dish_description;
+        RatingBar dish_rate;
     }
 }

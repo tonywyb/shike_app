@@ -273,6 +273,16 @@ public class NewDish extends Activity implements View.OnClickListener{
                 builder.setView(view_custom);
                 builder.setCancelable(true);
                 alert = builder.create();
+/*
+                view_custom.findViewById(R.id.tag_choose).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String result = " ";
+                        int count = 0;
+                        for()
+                    }
+                });
+                */
                 /*
                 alert = builder.setTitle("选择菜品标签")
                         .setMultiChoiceItems(PreferenceUtil.tag, checkItems, new DialogInterface.OnMultiChoiceClickListener() {
