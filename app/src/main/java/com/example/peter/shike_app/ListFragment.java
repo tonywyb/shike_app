@@ -55,29 +55,12 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         list_event = (ListView) view.findViewById(R.id.list_event);
 
         if (which == 0) {
-/*
-            PreferenceUtil.dishAdapter = new ReuseableAdapter<Dish>(PreferenceUtil.dishDatas, R.layout.list_item) {
-                @Override
-                public void bindView(ViewHolder holder, Dish obj) {
-                    holder.setText(R.id.txt_item_title, obj.getName());
-                }
-            };
-
-            list_event.setAdapter(PreferenceUtil.dishAdapter);
-            PreferenceUtil.dishDatas.clear();
-            getDishAsyncPHPClientPost();
-            list_event.setOnItemClickListener(this);
-            list_event.setOnItemLongClickListener(this);
-            */
-
-
             PreferenceUtil.myAdapter = new MyAdapter(PreferenceUtil.dishDatas, getActivity());
             list_event.setAdapter(PreferenceUtil.myAdapter);
             PreferenceUtil.dishDatas.clear();
             getDishAsyncPHPClientPost();
             list_event.setOnItemClickListener(this);
-            list_event.setOnItemLongClickListener(this);
-
+            //list_event.setOnItemLongClickListener(this);
         }
         else if (which == 1) {
             /*

@@ -39,7 +39,6 @@ public class PreferenceUtil {
             "勺园二楼", "燕南食堂", "佟园食堂", "畅春园食堂", "医学部",
             "松林包子"};
     public static final int[] canteenID = {4, 2, 3, 17, 14, 15, 16, 18, 19, 20, 21, 10, 13, 22};
-    public static final String[] tag = {"tag1", "tag2", "tag3", "tag4"};
     public static final String[] tag = {"清淡", "浓厚", "重口", "过咸", "过淡", "油腻",
             "酸", "甜", "辣", "苦", "鲜", "腥",
             "较硬", "较软", "较干", "有渣滓", "脆爽", "柔软", "q弹",
