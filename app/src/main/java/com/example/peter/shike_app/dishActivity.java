@@ -333,6 +333,7 @@ public class dishActivity extends AppCompatActivity {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("userID", userID);
+            //jsonObject.put("token", PreferenceUtil.token);
             jsonObject.put("dishID", dishID);
             jsonObject.put("rating", rating);
         } catch (JSONException e) {
@@ -358,6 +359,8 @@ public class dishActivity extends AppCompatActivity {
                         Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
                         score = response.getDouble("rating");
                         scoreBar.setRating((float)score);
+                        dishScore.setText(String.valueOf(score));
+                        PreferenceUtil.getDish(dishID).setRating(score);
                     }
                     else{
                         Toast.makeText(mContext, "发布失败", Toast.LENGTH_SHORT).show();

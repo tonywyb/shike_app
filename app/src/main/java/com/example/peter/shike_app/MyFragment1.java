@@ -119,11 +119,11 @@ public class MyFragment1 extends Fragment {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://ch.huyunfan.cn/PHP/dish/searchDish.php";
+        String url = "http://ch.huyunfan.cn/PHP/recommend/recommend.php";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("canteenID", 10);
+            jsonObject.put("token", PreferenceUtil.token);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -142,7 +142,7 @@ public class MyFragment1 extends Fragment {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 try {
-                    int status = response.getInt("searchDishStatus");
+                    int status = response.getInt("status");
                     if (status == 1) {
                         Toast.makeText(mContext, "status code is:"+ statusCode+ "\n更新失败!\n", Toast.LENGTH_LONG).show();
                     }
