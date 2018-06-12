@@ -42,7 +42,7 @@ public class Message extends Activity {
     private Context mContext;
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
-//    private String userName;
+    private String token;
     private String codestr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +133,9 @@ public class Message extends Activity {
         String url = "http://ch.huyunfan.cn/PHP/user/phoneVerify.php";
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
+        token = PreferenceUtil.token;
         try {
+            jsonObject.put("token", token);
             jsonObject.put("mobile", phonenumber);
 //            jsonObject.put("userName", userName);
             jsonObject.put("code", code);
