@@ -113,8 +113,10 @@ public class Signup extends Activity{
                 try {
                     int status = response.getInt("signupStatus");
                     if(status == 0) {
-                        Toast.makeText(mContext, "注册成功", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Signup.this, Login.class));
+                        Toast.makeText(mContext, "进入手机验证", Toast.LENGTH_SHORT).show();
+                        Intent it = new Intent(Signup.this, Message.class);
+//                        it.putExtra("userName", suusername.getText().toString());
+                        startActivity(it);
                         finish();
                     }
                     else if (status == 1){
@@ -161,8 +163,7 @@ public class Signup extends Activity{
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent it = new Intent(Signup.this, Message.class);
-                                it.putExtra("userName", suusername.getText().toString());
+                                Intent it = new Intent(Signup.this, Login.class);
                                 startActivity(it);
                                 //startActivity(new Intent(Signup.this, Message.class));
                                 finish();
