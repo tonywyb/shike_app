@@ -284,16 +284,21 @@ public class NewDish extends Activity implements View.OnClickListener{
                     @Override
                     public void onClick(View view) {
                         String result = " ";
+                        int count = 0;
                         for(int i = 0; i < PreferenceUtil.tagType.length; i ++) {
                             for(int j = 0; j < PreferenceUtil.iData.get(i).size(); j ++) {
                                 Tag temp_tag = PreferenceUtil.tagAdapter.getChild(i, j);
                                 if(temp_tag.isSelected()) {
-                                    result += temp_tag.getID() + temp_tag.getName() + " ";
+                                    count ++;
+                                    if(count < 5) {
+                                        result += temp_tag.getName() + " ";
+                                    }
                                     checkItems[temp_tag.getID()] = true;
                                     break;
                                 }
                             }
                         }
+                        result += "......";
                         Toast.makeText(mContext, "你选择了： " + result, Toast.LENGTH_SHORT).show();
                         tags.setText(result);
                         alert.dismiss();
@@ -453,7 +458,7 @@ public class NewDish extends Activity implements View.OnClickListener{
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://ch.huyunfan.cn/PHP/dish/addTagging.php";
+        String url = "http://ch.huyunfan.cn/PHP/tag/addTagging.php";
         JSONObject jsonObject = new JSONObject();
         //创建标签ID的Json数组{ID：xxx}
         JSONArray tagList = new JSONArray();
@@ -491,7 +496,7 @@ public class NewDish extends Activity implements View.OnClickListener{
             e.printStackTrace();
         }
 
-        Toast.makeText(mContext, "开始上传标签", Toast.LENGTH_LONG).show();
+        //Toast.makeText(mContext, "开始上传标签", Toast.LENGTH_LONG).show();
 
         client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler(){
             @Override
