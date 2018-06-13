@@ -354,7 +354,7 @@ public class dishActivity extends AppCompatActivity {
             if(checkItems[i]) {
                 JSONObject tempObject = new JSONObject();
                 try{
-                    tempObject.put("ID", i + 1);
+                    tempObject.put("ID", i + 6);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -446,7 +446,7 @@ public class dishActivity extends AppCompatActivity {
                             //Toast.makeText(mContext, tagList.toString(), Toast.LENGTH_LONG).show();
                             for (int i = 0; i < count; i ++) {
                                 JSONObject temp = tagList.getJSONObject(i);
-                                PreferenceUtil.tagData.add(PreferenceUtil.tag[temp.getInt("tagID") - 1]);
+                                PreferenceUtil.tagData.add(PreferenceUtil.tag[temp.getInt("tagID") - 6]);
                             }
                             PreferenceUtil.tagAdapter1.notifyDataSetChanged();
                         }

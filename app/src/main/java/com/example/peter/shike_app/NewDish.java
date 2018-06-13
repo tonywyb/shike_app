@@ -467,7 +467,7 @@ public class NewDish extends Activity implements View.OnClickListener{
             if(checkItems[i]) {
                 JSONObject tempObject = new JSONObject();
                 try{
-                    tempObject.put("ID", i + 1);
+                    tempObject.put("ID", i + 6);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
