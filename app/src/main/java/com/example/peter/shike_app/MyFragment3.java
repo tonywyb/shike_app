@@ -32,7 +32,7 @@ public class MyFragment3 extends Fragment implements View.OnClickListener{
     private Context mContext = null;
     private TextView name = null;
     private Button logout, about;
-    private Button myfocustag;
+    private Button myfocustag, myrate;
 
     private AlertDialog alert = null;
     private AlertDialog.Builder builder = null;
@@ -47,6 +47,7 @@ public class MyFragment3 extends Fragment implements View.OnClickListener{
         myupload = (Button) view.findViewById(R.id.myupload);
         pwd = (Button) view.findViewById(R.id.pwd);
         about = (Button)view.findViewById(R.id.about);
+        myrate = (Button)view.findViewById(R.id.myrate);
         pwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,10 +70,11 @@ public class MyFragment3 extends Fragment implements View.OnClickListener{
         myupload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (PreferenceUtil.islogged)
+                Toast.makeText(getActivity(), "功能即将上线，敬请期待!", Toast.LENGTH_SHORT).show();
+                /*if (PreferenceUtil.islogged)
                     startActivity(new Intent(getActivity(), Myevent.class));
                 else
-                    Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();*/
             }
         });
         about.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +94,7 @@ public class MyFragment3 extends Fragment implements View.OnClickListener{
         });
         myfocustag = (Button)view.findViewById(R.id.myfocustag);
         myfocustag.setOnClickListener(this);
+        myrate.setOnClickListener(this);
         return view;
     }
 
@@ -107,7 +110,7 @@ public class MyFragment3 extends Fragment implements View.OnClickListener{
         Toast.makeText(mContext, "功能即将上线，敬请期待！", Toast.LENGTH_SHORT).show();
     }
 
-    public void getEventByIDAsyncHttpClientPost(int userID) {
+    /*public void getEventByIDAsyncHttpClientPost(int userID) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
@@ -156,5 +159,5 @@ public class MyFragment3 extends Fragment implements View.OnClickListener{
         });
         return;
 
-    }
+    }*/
 }
