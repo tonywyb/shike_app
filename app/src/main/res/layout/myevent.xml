@@ -9,7 +9,7 @@
         android:id="@+id/myeventflup"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:background="#51a486"
+        android:background="@color/zhihu_primary"
         android:gravity="center"
         android:text="我的事件"
         android:textColor="#FFFFFF"
