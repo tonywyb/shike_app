@@ -3,16 +3,20 @@ package com.example.peter.shike_app;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,6 +31,7 @@ import org.apache.http.Header;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,6 +55,14 @@ public class dishActivity extends AppCompatActivity {
     private TextView dishScore;
     private RatingBar scoreBar;
     private Button scoreButton;
+    private Button dish_tag;
+    private ListView tag_recommend_listview;
+    private Button tag_recommendadd;
+    private Button tag_recommendret;
+
+    private ExpandableListView tag_list;
+    private boolean[] checkItems;
+    private TextView tags;
 
     private int userScore;
     private double score;
@@ -82,6 +95,7 @@ public class dishActivity extends AppCompatActivity {
         dish_canteen = (TextView)findViewById(R.id.dish_canteen);
         dish_publisher = (TextView)findViewById(R.id.dish_publisher);
         scoreButton = (Button)findViewById(R.id.dish_score);
+        dish_tag = (Button)findViewById(R.id.dish_tag);
 
         Bundle bd = getIntent().getExtras();
         dishID = bd.getInt("dishID");
@@ -141,6 +155,95 @@ public class dishActivity extends AppCompatActivity {
 
                             }
                         }).create();
+                alert.show();
+            }
+        });
+        //点击查看标签按钮弹出对话框
+        dish_tag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!PreferenceUtil.islogged) {
+                    Toast.makeText(mContext, "请先登录", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                PreferenceUtil.tagAdapter1 = new tagAdapter(PreferenceUtil.tagData, mContext);
+                alert = null;
+                builder = new AlertDialog.Builder(mContext);
+                final LayoutInflater inflater = getLayoutInflater();
+                View view_custom = inflater.inflate(R.layout.tag_recommend, null, false);
+                tag_recommend_listview = (ListView)view_custom.findViewById(R.id.recommend_listview);
+                tag_recommend_listview.setAdapter(PreferenceUtil.myAdapter);
+
+                PreferenceUtil.tagData.clear();
+                getTagAsyncHTTPClientPost();
+
+                tag_recommendret = (Button)view_custom.findViewById(R.id.tag_recommendret);
+                tag_recommendret.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+
+                        checkItems = new boolean[PreferenceUtil.tag.length];
+                        for(int i = 0; i < checkItems.length; i ++)
+                            checkItems[i] = false;
+
+                        PreferenceUtil.tagAdapter = new MyBaseExpandableListAdapter(PreferenceUtil.gData, PreferenceUtil.iData, mContext);
+
+                        alert = null;
+                        builder = new AlertDialog.Builder(mContext);
+                        final LayoutInflater inflater = getLayoutInflater();
+                        View view_custom = inflater.inflate(R.layout.tag_selete, null, false);
+
+                        builder.setView(view_custom);
+
+                        tag_list = view_custom.findViewById(R.id.tag_list);
+                        tag_list.setAdapter(PreferenceUtil.tagAdapter);
+
+                        tag_list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                            @Override
+                            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+                                PreferenceUtil.tagAdapter.select(groupPosition, childPosition);
+                                Toast.makeText(mContext, "你点击了：" + PreferenceUtil.iData.get(groupPosition).get(childPosition).getName(), Toast.LENGTH_SHORT).show();
+                                return true;
+                            }
+                        });
+
+                        builder.setCancelable(true);
+                        alert = builder.create();
+
+                        view_custom.findViewById(R.id.tag_choose).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String result = " ";
+                                for(int i = 0; i < PreferenceUtil.tagType.length; i ++) {
+                                    for(int j = 0; j < PreferenceUtil.iData.get(i).size(); j ++) {
+                                        Tag temp_tag = PreferenceUtil.tagAdapter.getChild(i, j);
+                                        if(temp_tag.isSelected()) {
+                                            result += temp_tag.getName() + " ";
+                                            checkItems[temp_tag.getID()] = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                Toast.makeText(mContext, "你选择了： " + result, Toast.LENGTH_SHORT).show();
+                                addTagByAsyncHttpClientPost();
+                                alert.dismiss();
+                            }
+                        });
+                    }
+                });
+
+                tag_recommendadd = (Button)view_custom.findViewById(R.id.tag_recommendadd);
+                tag_recommendadd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alert.dismiss();
+
+                    }
+                });
+                builder.setView(view_custom);
+                alert = builder.create();
                 alert.show();
             }
         });
@@ -217,6 +320,130 @@ public class dishActivity extends AppCompatActivity {
             });
 
         }
+    }
+    public void addTagByAsyncHttpClientPost() {
+        //创建异步请求对象
+        AsyncHttpClient client = new AsyncHttpClient();
+        //输入要请求的url
+        String url = "http://ch.huyunfan.cn/PHP/tag/addTagging.php";
+        JSONObject jsonObject = new JSONObject();
+        //创建标签ID的Json数组{ID：xxx}
+        JSONArray tagList = new JSONArray();
+
+        for(int i = 0; i < checkItems.length; i ++) {
+            if(checkItems[i]) {
+                JSONObject tempObject = new JSONObject();
+                try{
+                    tempObject.put("ID", i + 1);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                try{
+                    tagList.put(tempObject);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        //创建大的Json对象
+        try {
+            jsonObject.put("userID", PreferenceUtil.userID);
+            jsonObject.put("dishID", dishID);
+            jsonObject.put("tagList", tagList);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        //Toast.makeText(mContext, "开始上传标签", Toast.LENGTH_LONG).show();
+
+        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    int result = (response.getInt("Status"));
+                    if (result == 0){
+                        Toast.makeText(mContext, "上传标签成功", Toast.LENGTH_LONG).show();
+                    }
+                    else
+                        Toast.makeText(mContext, "上传标签失败", Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(mContext, "上传标签失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void getTagAsyncHTTPClientPost() {
+        //创建异步请求对象
+        AsyncHttpClient client = new AsyncHttpClient();
+        //输入要请求的url
+        String url = "http://ch.huyunfan.cn/PHP/dish/checkDishTags.php";
+        //请求的参数对象
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("dishID", dishID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //将参数加入到参数对象中
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //进行post请求
+        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler() {
+            //如果成功
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    int status = response.getInt("checkStatus");
+                    if (status == 1) {
+                        Toast.makeText(mContext, "status code is:"+ statusCode+ "\n获取菜品标签失败!\n", Toast.LENGTH_LONG).show();
+                    }
+                    else if(status == 0) {
+                        //Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
+                        int count = response.getInt("tagNum");
+                        if (count > 0) {
+                            JSONArray tagList = response.getJSONArray("tagList");
+                            //Toast.makeText(mContext, tagList.toString(), Toast.LENGTH_LONG).show();
+                            for (int i = 0; i < count; i ++) {
+                                JSONObject temp = tagList.getJSONObject(i);
+                                PreferenceUtil.tagData.add(PreferenceUtil.tag[temp.getInt("tagID") - 1]);
+                            }
+                            PreferenceUtil.tagAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(mContext, "connection error!Error number is:" + statusCode,  Toast.LENGTH_SHORT).show();
+            }
+        });
+        return;
     }
     private void reportEventAsyncHttpClientPost(final int eventID, final Event event) {
         //创建异步请求对象

@@ -13,6 +13,7 @@ public class PreferenceUtil {
     public static MyAdapter myAdapter = null;
     public static MyAdapter myAdapter2 = null;
     public static MyAdapter myAdapterloc = null;
+    public static tagAdapter tagAdapter1 = null;
     public static ReuseableAdapter dishAdapter = null;
     public static MyBaseExpandableListAdapter tagAdapter = null;
     public static MyAdapterforComment myAdapterforComment = null;
@@ -20,6 +21,7 @@ public class PreferenceUtil {
     public static ArrayList<Event> mydatas = new ArrayList<Event>();
     public static ArrayList<Event> locdatas = new ArrayList<Event>();
 
+    public static ArrayList<String> tagData = new ArrayList<String>();
     public static ArrayList<String> gData = new ArrayList<String>();
     public static ArrayList<ArrayList<Tag>> iData = new ArrayList<ArrayList<Tag>>();
     public static ArrayList<Tag> lData = new ArrayList<Tag>();
