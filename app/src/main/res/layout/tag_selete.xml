@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tag_title"
-        android:childDivider="#55e5e7"/>
+        android:childDivider="#2f3131"/>
 
     <Button
         android:id="@+id/tag_choose"
