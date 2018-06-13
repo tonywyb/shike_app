@@ -51,7 +51,7 @@ public class MyFragment1 extends Fragment {
     private Button tobuttom;
     private View nothing;
 
-    private Button recommend;
+    private Button recommend, random, top10;
     private ListView recommend_listview;
     private Button recommendret;
 
@@ -61,6 +61,48 @@ public class MyFragment1 extends Fragment {
         mContext = getActivity();
 
         recommend = (Button)view.findViewById(R.id.recommend);
+        random = (Button)view.findViewById(R.id.random);
+        top10 = (Button)view.findViewById(R.id.top10);
+        random.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PreferenceUtil.myAdapter = new MyAdapter(PreferenceUtil.dishDatas, getActivity());
+                alert = null;
+                builder = new AlertDialog.Builder(mContext);
+                View view_custom = inflater.inflate(R.layout.list_recommend, null, false);
+                recommend_listview = (ListView)view_custom.findViewById(R.id.recommend_listview);
+                recommend_listview.setAdapter(PreferenceUtil.myAdapter);
+                recommend_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Bundle bd = new Bundle();
+                        int dishID = 0;
+                        dishID = PreferenceUtil.dishDatas.get(position).getID();
+                        bd.putInt("dishID", dishID);
+                        bd.putInt("which", 0);
+                        Intent it = new Intent(getActivity(), dishActivity.class);
+                        it.putExtras(bd);
+                        startActivity(it);
+                    }
+                });
+
+                TextView title = (TextView)view_custom.findViewById(R.id.recommend_title);
+                title.setText("随机推荐");
+
+                PreferenceUtil.dishDatas.clear();
+                getDishAsyncPHPClientPost(0);
+                recommendret = (Button)view_custom.findViewById(R.id.recommendret);
+                recommendret.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                    }
+                });
+                builder.setView(view_custom);
+                alert = builder.create();
+                alert.show();
+            }
+        });
         recommend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +126,7 @@ public class MyFragment1 extends Fragment {
                     }
                 });
                 PreferenceUtil.dishDatas.clear();
-                getDishAsyncPHPClientPost();
+                getDishAsyncPHPClientPost(1);
                 recommendret = (Button)view_custom.findViewById(R.id.recommendret);
                 recommendret.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -97,7 +139,46 @@ public class MyFragment1 extends Fragment {
                 alert.show();
             }
         });
+        top10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PreferenceUtil.myAdapter = new MyAdapter(PreferenceUtil.dishDatas, getActivity());
+                alert = null;
+                builder = new AlertDialog.Builder(mContext);
+                View view_custom = inflater.inflate(R.layout.list_recommend, null, false);
+                recommend_listview = (ListView)view_custom.findViewById(R.id.recommend_listview);
+                recommend_listview.setAdapter(PreferenceUtil.myAdapter);
+                recommend_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Bundle bd = new Bundle();
+                        int dishID = 0;
+                        dishID = PreferenceUtil.dishDatas.get(position).getID();
+                        bd.putInt("dishID", dishID);
+                        bd.putInt("which", 0);
+                        Intent it = new Intent(getActivity(), dishActivity.class);
+                        it.putExtras(bd);
+                        startActivity(it);
+                    }
+                });
 
+                TextView title = (TextView)view_custom.findViewById(R.id.recommend_title);
+                title.setText("评分前十");
+
+                PreferenceUtil.dishDatas.clear();
+                getDishAsyncPHPClientPost(2);
+                recommendret = (Button)view_custom.findViewById(R.id.recommendret);
+                recommendret.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                    }
+                });
+                builder.setView(view_custom);
+                alert = builder.create();
+                alert.show();
+            }
+        });
         return view;
     }
 
@@ -115,15 +196,28 @@ public class MyFragment1 extends Fragment {
         super.onPause();
     }
 
-    private void getDishAsyncPHPClientPost() {
+    private void getDishAsyncPHPClientPost(int which) {
         //创建异步请求对象
         AsyncHttpClient client = new AsyncHttpClient();
         //输入要请求的url
-        String url = "http://ch.huyunfan.cn/PHP/recommend/recommend.php";
+        String url = null;
+        //random, recommend, top10
+        switch (which){
+            case 0:
+                url = "http://ch.huyunfan.cn/PHP/recommend/recommendRandTen.php";
+                break;
+            case 1:
+                url = "http://ch.huyunfan.cn/PHP/recommend/recommend.php";
+                break;
+            case 2:
+                url = "http://ch.huyunfan.cn/PHP/recommend/recommendTopTen.php";
+                break;
+        }
         //请求的参数对象
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("token", PreferenceUtil.token);
+            if (which == 1)
+                jsonObject.put("token", PreferenceUtil.token);
         } catch (JSONException e) {
             e.printStackTrace();
         }
