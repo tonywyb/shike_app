@@ -304,35 +304,6 @@ public class NewDish extends Activity implements View.OnClickListener{
                         alert.dismiss();
                     }
                 });
-
-                /*
-                alert = builder.setTitle("选择菜品标签")
-                        .setMultiChoiceItems(PreferenceUtil.tag, checkItems, new DialogInterface.OnMultiChoiceClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                                checkItems[which] = isChecked;
-                            }
-                        })
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String result = "";
-                                int count = 0;
-                                for (int i = 0; i < checkItems.length; i++){
-                                    if (checkItems[i]) {
-                                        result += PreferenceUtil.tag[i] + " ";
-                                        count++;
-                                    }
-                                    if (count == 5) {
-                                        result += "......";
-                                        break;
-                                    }
-                                }
-                                tags.setText(result);
-                            }
-                        })
-                        .create();
-                */
                 alert.show();
                 break;
             case R.id.exlist_lol:

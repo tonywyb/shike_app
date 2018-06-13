@@ -65,6 +65,9 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
                     iData.get(groupPosition).get(i).setSelected(false);
             }
         }
+        else if(iData.get(groupPosition).get(childPosition).isSelected()) {
+            iData.get(groupPosition).get(childPosition).setSelected(false);
+        }
         notifyDataSetChanged();
     }
 
