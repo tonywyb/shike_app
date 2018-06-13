@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 public class dishActivity extends AppCompatActivity {
     
@@ -115,6 +116,25 @@ public class dishActivity extends AppCompatActivity {
             dishScore.setText(String.valueOf(score));
         }
 
+        PreferenceUtil.gData.clear();
+        PreferenceUtil.iData.clear();
+        PreferenceUtil.lData.clear();
+
+        int group_before = 0;
+        for(int i = 0; i < PreferenceUtil.tagType.length; i ++) {
+            PreferenceUtil.gData.add(PreferenceUtil.tagType[i]);
+        }
+        for(int i = 0; i < PreferenceUtil.tag.length; i ++) {
+            Tag tag = new Tag(i);
+            if(group_before != tag.getType()) {
+                PreferenceUtil.iData.add(PreferenceUtil.lData);
+                PreferenceUtil.lData = new ArrayList<Tag>();
+            }
+            group_before = tag.getType();
+            PreferenceUtil.lData.add(tag);
+        }
+        PreferenceUtil.iData.add(PreferenceUtil.lData);
+
 
         /*Picasso.with(mContext)
                 .load("http://i.imgur.com/DvpvklR.png")
@@ -171,14 +191,14 @@ public class dishActivity extends AppCompatActivity {
                 builder = new AlertDialog.Builder(mContext);
                 final LayoutInflater inflater = getLayoutInflater();
                 View view_custom = inflater.inflate(R.layout.tag_recommend, null, false);
-                tag_recommend_listview = (ListView)view_custom.findViewById(R.id.recommend_listview);
-                tag_recommend_listview.setAdapter(PreferenceUtil.myAdapter);
+                tag_recommend_listview = (ListView)view_custom.findViewById(R.id.tag_recommend_listview);
+                tag_recommend_listview.setAdapter(PreferenceUtil.tagAdapter1);
 
                 PreferenceUtil.tagData.clear();
                 getTagAsyncHTTPClientPost();
 
-                tag_recommendret = (Button)view_custom.findViewById(R.id.tag_recommendret);
-                tag_recommendret.setOnClickListener(new View.OnClickListener() {
+                tag_recommendadd = (Button)view_custom.findViewById(R.id.tag_recommendadd);
+                tag_recommendadd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         alert.dismiss();
@@ -231,15 +251,15 @@ public class dishActivity extends AppCompatActivity {
                                 alert.dismiss();
                             }
                         });
+                        alert.show();
                     }
                 });
 
-                tag_recommendadd = (Button)view_custom.findViewById(R.id.tag_recommendadd);
-                tag_recommendadd.setOnClickListener(new View.OnClickListener() {
+                tag_recommendret = (Button)view_custom.findViewById(R.id.tag_recommendret);
+                tag_recommendret.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         alert.dismiss();
-
                     }
                 });
                 builder.setView(view_custom);
@@ -428,7 +448,7 @@ public class dishActivity extends AppCompatActivity {
                                 JSONObject temp = tagList.getJSONObject(i);
                                 PreferenceUtil.tagData.add(PreferenceUtil.tag[temp.getInt("tagID") - 1]);
                             }
-                            PreferenceUtil.tagAdapter.notifyDataSetChanged();
+                            PreferenceUtil.tagAdapter1.notifyDataSetChanged();
                         }
                     }
 
