@@ -9,10 +9,12 @@ public class Tag {
     private String name;
     private int type;
     private String typeName;
+    private boolean isSelected;
 
     public Tag(int ID) {
         this.ID = ID;
         this.name = PreferenceUtil.tag[ID];
+        this.isSelected = false;
         if(ID >= 0 && ID <= 11)
             this.type = 0;
         else if(ID >= 12 && ID <= 18)
@@ -61,5 +63,13 @@ public class Tag {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
     }
 }

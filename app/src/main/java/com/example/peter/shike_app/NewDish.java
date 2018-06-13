@@ -40,6 +40,7 @@ import org.apache.http.Header;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -250,7 +251,9 @@ public class NewDish extends Activity implements View.OnClickListener{
                 finish();
                 break;
             case R.id.list_tag:
-                //checkItems = new boolean[]{false, false, false, false};
+                checkItems = new boolean[PreferenceUtil.tag.length];
+                for(int i = 0; i < checkItems.length; i ++)
+                    checkItems[i] = false;
 
                 PreferenceUtil.tagAdapter = new MyBaseExpandableListAdapter(PreferenceUtil.gData, PreferenceUtil.iData, mContext);
 
@@ -259,30 +262,44 @@ public class NewDish extends Activity implements View.OnClickListener{
                 final LayoutInflater inflater = this.getLayoutInflater();
                 View view_custom = inflater.inflate(R.layout.tag_selete, null, false);
 
+                builder.setView(view_custom);
+
                 tag_list = view_custom.findViewById(R.id.tag_list);
                 tag_list.setAdapter(PreferenceUtil.tagAdapter);
 
                 tag_list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                     @Override
                     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+                        PreferenceUtil.tagAdapter.select(groupPosition, childPosition);
                         Toast.makeText(mContext, "你点击了：" + PreferenceUtil.iData.get(groupPosition).get(childPosition).getName(), Toast.LENGTH_SHORT).show();
                         return true;
                     }
                 });
 
-                builder.setView(view_custom);
                 builder.setCancelable(true);
                 alert = builder.create();
-/*
+
                 view_custom.findViewById(R.id.tag_choose).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         String result = " ";
-                        int count = 0;
-                        for()
+                        for(int i = 0; i < PreferenceUtil.tagType.length; i ++) {
+                            for(int j = 0; j < PreferenceUtil.iData.get(i).size(); j ++) {
+                                Tag temp_tag = PreferenceUtil.tagAdapter.getChild(i, j);
+                                if(temp_tag.isSelected()) {
+                                    result += temp_tag.getID() + temp_tag.getName() + " ";
+                                    checkItems[temp_tag.getID()] = true;
+                                    break;
+                                }
+                            }
+                        }
+                        Toast.makeText(mContext, "你选择了： " + result, Toast.LENGTH_SHORT).show();
+                        tags.setText(result);
+                        alert.dismiss();
                     }
                 });
-                */
+
                 /*
                 alert = builder.setTitle("选择菜品标签")
                         .setMultiChoiceItems(PreferenceUtil.tag, checkItems, new DialogInterface.OnMultiChoiceClickListener() {
@@ -414,8 +431,10 @@ public class NewDish extends Activity implements View.OnClickListener{
                 super.onSuccess(statusCode, headers, response);
                 try {
                     int result = (response.getInt("Status"));
-                    if (result == 0)
+                    if (result == 0) {
                         Toast.makeText(mContext, "上传图片成功", Toast.LENGTH_LONG).show();
+                        dishTagByAsyncHttpClientPost();
+                    }
                     else
                         Toast.makeText(mContext, "上传图片失败", Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
@@ -429,5 +448,71 @@ public class NewDish extends Activity implements View.OnClickListener{
             }
         });
         return;
+    }
+    public void dishTagByAsyncHttpClientPost() {
+        //创建异步请求对象
+        AsyncHttpClient client = new AsyncHttpClient();
+        //输入要请求的url
+        String url = "http://ch.huyunfan.cn/PHP/dish/addTagging.php";
+        JSONObject jsonObject = new JSONObject();
+        //创建标签ID的Json数组{ID：xxx}
+        JSONArray tagList = new JSONArray();
+
+        for(int i = 0; i < checkItems.length; i ++) {
+            if(checkItems[i]) {
+                JSONObject tempObject = new JSONObject();
+                try{
+                    tempObject.put("ID", i + 1);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                try{
+                    tagList.put(tempObject);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        //创建大的Json对象
+        try {
+            jsonObject.put("userID", PreferenceUtil.userID);
+            jsonObject.put("dishID", dishID);
+            jsonObject.put("tagList", tagList);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        Toast.makeText(mContext, "开始上传标签", Toast.LENGTH_LONG).show();
+
+        client.post(mContext, url, entity, "application/json", new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    int result = (response.getInt("Status"));
+                    if (result == 0){
+                        Toast.makeText(mContext, "上传标签成功", Toast.LENGTH_LONG).show();
+                    }
+                    else
+                        Toast.makeText(mContext, "上传标签失败", Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(mContext, "上传标签失败", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

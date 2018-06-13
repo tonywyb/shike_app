@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -57,6 +57,17 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
+    public void select(int groupPosition, int childPosition) {
+        if(!iData.get(groupPosition).get(childPosition).isSelected()) {
+            iData.get(groupPosition).get(childPosition).setSelected(true);
+            for(int i = 0; i < iData.get(groupPosition).size(); i ++) {
+                if(i != childPosition)
+                    iData.get(groupPosition).get(i).setSelected(false);
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     //取得用于显示给定分组的视图. 这个方法仅返回分组的视图对象
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
@@ -84,12 +95,14 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
                     R.layout.tag_item_child, parent, false);
             itemHolder = new ViewHolderItem();
             itemHolder.tag_name = (TextView) convertView.findViewById(R.id.tag_name);
-            itemHolder.isCheck = ((CheckBox) convertView.findViewById(R.id.tag_check)).isChecked();
+            itemHolder.tag_check = ((RadioButton) convertView.findViewById(R.id.tag_check));
+            //itemHolder.tag_check.setClickable(false);
             convertView.setTag(itemHolder);
         }else{
             itemHolder = (ViewHolderItem) convertView.getTag();
         }
         itemHolder.tag_name.setText(iData.get(groupPosition).get(childPosition).getName());
+        itemHolder.tag_check.setChecked(iData.get(groupPosition).get(childPosition).isSelected());
         return convertView;
     }
 
@@ -106,7 +119,7 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
 
     private static class ViewHolderItem{
         private TextView tag_name;
-        private boolean isCheck;
+        private RadioButton tag_check;
     }
 
 }
